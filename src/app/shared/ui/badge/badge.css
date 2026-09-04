@@ -1,0 +1,16 @@
+.app-badge {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-orange);
+  color: var(--color-navy);
+  border-radius: var(--radius);
+}
+
+.app-badge--sold {
+  background: var(--color-navy);
+  color: var(--color-surface);
+}

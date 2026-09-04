@@ -1,0 +1,27 @@
+<section class="app-auth-page">
+  <h1>Inscription</h1>
+
+  @if (registered()) {
+    <p class="app-auth-page__success">
+      Compte créé ! Vérifie tes emails pour confirmer ton adresse avant de te connecter.
+    </p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <app-text-field label="Nom d'utilisateur" formControlName="username" />
+      <app-text-field label="Email" type="email" formControlName="email" />
+      <app-text-field label="Mot de passe" type="password" formControlName="password" />
+      <app-text-field label="Confirme le mot de passe" type="password" formControlName="confirmPassword" />
+
+      @if (passwordMismatch()) {
+        <p class="app-auth-page__error">Les mots de passe ne correspondent pas.</p>
+      }
+      @if (serverError()) {
+        <p class="app-auth-page__error">{{ serverError() }}</p>
+      }
+
+      <app-button type="submit" [disabled]="submitting()">Créer mon compte</app-button>
+    </form>
+
+    <p>Déjà inscrit ? <a routerLink="/auth/login">Se connecter</a></p>
+  }
+</section>

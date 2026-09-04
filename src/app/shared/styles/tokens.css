@@ -1,0 +1,17 @@
+:root {
+  --color-navy: #1A1422;
+  --color-orange: #F2AA4C;
+  --color-bg: #EDE4D3;
+  --color-surface: #FFFFFF;
+  --color-accent: #E85A4F;
+  --color-text: var(--color-navy);
+  --color-border: var(--color-navy);
+
+  --radius: 0;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+}

@@ -1,0 +1,12 @@
+<article class="app-card">
+  @if (featured()) {
+    <app-badge class="app-card__badge" variant="featured" label="Pépite" />
+  } @else if (sold()) {
+    <app-badge class="app-card__badge" variant="sold" label="Vendu" />
+  }
+
+  <img class="app-card__image" [src]="imageUrl() ?? 'images/plusicon.svg'" [alt]="title()" />
+  <h3 class="app-card__title">{{ title() }}</h3>
+  <p class="app-card__price">{{ price() | currency: 'EUR' }}</p>
+  <a class="app-card__cta" [routerLink]="routerLink()">Voir</a>
+</article>

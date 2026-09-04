@@ -1,0 +1,9 @@
+<button
+  class="app-button"
+  [class.app-button--secondary]="variant() === 'secondary'"
+  [type]="type()"
+  [disabled]="disabled()"
+  (click)="onClick()"
+>
+  <ng-content />
+</button>

@@ -1,0 +1,14 @@
+<section class="app-auth-page">
+  @switch (status()) {
+    @case ('pending') {
+      <p>Confirmation en cours...</p>
+    }
+    @case ('success') {
+      <p>Ton compte est confirmé, tu peux te connecter.</p>
+      <a routerLink="/auth/login">Se connecter</a>
+    }
+    @case ('error') {
+      <p class="app-auth-page__error">Lien de confirmation invalide ou expiré.</p>
+    }
+  }
+</section>

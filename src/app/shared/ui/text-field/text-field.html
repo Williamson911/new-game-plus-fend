@@ -1,0 +1,15 @@
+<div class="app-text-field">
+  <label [for]="id">{{ label() }}</label>
+  <input
+    [id]="id"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [value]="value"
+    [disabled]="disabled"
+    (input)="handleInput($any($event.target).value)"
+    (blur)="handleBlur()"
+  />
+  @if (error()) {
+    <p class="app-text-field__error">{{ error() }}</p>
+  }
+</div>

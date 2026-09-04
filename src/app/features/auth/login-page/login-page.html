@@ -1,0 +1,19 @@
+<section class="app-auth-page">
+  <h1>Connexion</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <app-text-field label="Email" type="email" formControlName="email" />
+    <app-text-field label="Mot de passe" type="password" formControlName="password" />
+
+    @if (serverError()) {
+      <p class="app-auth-page__error">{{ serverError() }}</p>
+    }
+
+    <app-button type="submit" [disabled]="submitting()">Se connecter</app-button>
+  </form>
+
+  <p>
+    Pas encore de compte ? <a routerLink="/auth/register">S'inscrire</a><br />
+    <a routerLink="/auth/forgot-password">Mot de passe oublié ?</a>
+  </p>
+</section>

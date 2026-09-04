@@ -1,0 +1,33 @@
+.app-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-navy);
+  padding: var(--space-3) var(--space-4);
+}
+
+.app-navbar__brand img {
+  height: 40px;
+}
+
+.app-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.app-navbar__links a,
+.app-navbar__logout {
+  color: var(--color-surface);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.app-navbar__links a.is-active {
+  color: var(--color-orange);
+}

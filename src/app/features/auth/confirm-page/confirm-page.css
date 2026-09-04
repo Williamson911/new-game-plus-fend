@@ -1,0 +1,10 @@
+.app-auth-page {
+  max-width: 360px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.app-auth-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}

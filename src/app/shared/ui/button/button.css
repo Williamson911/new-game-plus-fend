@@ -1,0 +1,22 @@
+.app-button {
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--color-navy);
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-surface);
+  cursor: pointer;
+}
+
+.app-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.app-button--secondary {
+  background: var(--color-surface);
+  color: var(--color-navy);
+}

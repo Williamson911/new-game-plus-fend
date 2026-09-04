@@ -1,0 +1,21 @@
+<header class="app-navbar">
+  <a class="app-navbar__brand" routerLink="/">
+    <img src="images/ng+.svg" alt="New Game Plus" />
+  </a>
+
+  <nav class="app-navbar__links">
+    <a routerLink="/market" routerLinkActive="is-active">Market</a>
+
+    @if (authService.hasRole('SELLER')) {
+      <a routerLink="/my-shop" routerLinkActive="is-active">My Shop</a>
+    }
+
+    @if (authService.isAuthenticated()) {
+      <a routerLink="/profile" routerLinkActive="is-active">Profile</a>
+      <a routerLink="/cart" routerLinkActive="is-active">Cart</a>
+      <button type="button" class="app-navbar__logout" (click)="logout()">Logout</button>
+    } @else {
+      <a routerLink="/auth/login" routerLinkActive="is-active">Login</a>
+    }
+  </nav>
+</header>

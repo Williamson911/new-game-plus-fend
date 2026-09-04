@@ -1,0 +1,13 @@
+.app-auth-page {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.app-auth-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.app-auth-page__success {
+  font-weight: 700;
+}
