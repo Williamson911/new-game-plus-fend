@@ -1,0 +1,33 @@
+.app-market-page__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: flex-end;
+  margin-bottom: var(--space-4);
+}
+
+.app-market-page__price-range {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.app-market-page__price-range input {
+  font-family: var(--font-body);
+  padding: var(--space-2);
+  border: 2px solid var(--color-navy);
+  border-radius: var(--radius);
+}
+
+.app-market-page__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.app-market-page__pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}

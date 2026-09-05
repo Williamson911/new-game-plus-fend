@@ -1,0 +1,45 @@
+<section class="app-market-page">
+  <h1>Market</h1>
+
+  <form [formGroup]="form" class="app-market-page__filters">
+    <app-text-field label="Recherche" formControlName="search" placeholder="Nom du jeu..." />
+    <app-select-field label="Genre" [options]="genreOptions()" formControlName="genreId" />
+    <app-select-field label="Plateforme" [options]="platformOptions()" formControlName="platform" />
+
+    <div class="app-market-page__price-range">
+      <label for="market-min-price">Prix min</label>
+      <input id="market-min-price" type="number" formControlName="minPrice" />
+      <label for="market-max-price">Prix max</label>
+      <input id="market-max-price" type="number" formControlName="maxPrice" />
+    </div>
+
+    <app-button type="button" variant="secondary" (pressed)="reset()">Réinitialiser</app-button>
+  </form>
+
+  @if (loading()) {
+    <p>Chargement...</p>
+  } @else if (listings().length === 0) {
+    <p>Aucune annonce ne correspond à ces critères.</p>
+  } @else {
+    <div class="app-market-page__grid">
+      @for (listing of listings(); track listing.id) {
+        <app-card
+          [title]="listing.gameName"
+          [price]="listing.price"
+          [imageUrl]="listing.imageUrls[0] ?? null"
+          [routerLink]="['/listings', listing.id]"
+          [featured]="listing.featured"
+          [sold]="listing.status === 'SOLD'"
+        />
+      }
+    </div>
+
+    <div class="app-market-page__pagination">
+      <app-button type="button" [disabled]="page() === 0" (pressed)="goToPage(page() - 1)">Précédent</app-button>
+      <span>Page {{ page() + 1 }} sur {{ totalPages() }}</span>
+      <app-button type="button" [disabled]="page() + 1 >= totalPages()" (pressed)="goToPage(page() + 1)">
+        Suivant
+      </app-button>
+    </div>
+  }
+</section>

@@ -1,0 +1,42 @@
+@if (loading()) {
+  <p>Chargement...</p>
+} @else if (notFound()) {
+  <p class="app-listing-detail__error">Annonce introuvable.</p>
+} @else if (listing() && game()) {
+  <article class="app-listing-detail">
+    <img
+      class="app-listing-detail__image"
+      [src]="listing()!.imageUrls[0] ?? game()!.coverURL ?? 'images/plusicon.svg'"
+      [alt]="game()!.name"
+    />
+
+    <div class="app-listing-detail__info">
+      @if (listing()!.featured) {
+        <app-badge variant="featured" label="Pépite" />
+      } @else if (listing()!.status === 'SOLD') {
+        <app-badge variant="sold" label="Vendu" />
+      }
+
+      <h1>{{ game()!.name }}</h1>
+      <p class="app-listing-detail__price">{{ listing()!.price | currency: 'EUR' }}</p>
+      <p>{{ game()!.description }}</p>
+
+      <dl class="app-listing-detail__meta">
+        <dt>Genres</dt>
+        <dd>{{ game()!.genres.join(', ') || 'Non renseigné' }}</dd>
+        <dt>Éditeur</dt>
+        <dd>{{ game()!.publisher }}</dd>
+        <dt>Développeur</dt>
+        <dd>{{ game()!.developer }}</dd>
+        <dt>Plateforme</dt>
+        <dd>{{ game()!.platform }}</dd>
+        <dt>Date de sortie</dt>
+        <dd>{{ game()!.releaseDate }}</dd>
+        <dt>Boutique</dt>
+        <dd>{{ listing()!.shopName }}</dd>
+      </dl>
+
+      <app-button (pressed)="addToCart()">Ajouter au panier</app-button>
+    </div>
+  </article>
+}

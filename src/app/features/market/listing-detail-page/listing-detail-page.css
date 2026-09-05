@@ -1,0 +1,42 @@
+.app-listing-detail {
+  display: flex;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.app-listing-detail__image {
+  width: 240px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border: 2px solid var(--color-navy);
+}
+
+.app-listing-detail__info {
+  flex: 1;
+  min-width: 240px;
+}
+
+.app-listing-detail__price {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.app-listing-detail__meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-3);
+  margin: var(--space-4) 0;
+}
+
+.app-listing-detail__meta dt {
+  font-weight: 700;
+}
+
+.app-listing-detail__meta dd {
+  margin: 0;
+}
+
+.app-listing-detail__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}

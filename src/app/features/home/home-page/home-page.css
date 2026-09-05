@@ -1,0 +1,9 @@
+.app-home-section {
+  margin-bottom: var(--space-5);
+}
+
+.app-home-section__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}

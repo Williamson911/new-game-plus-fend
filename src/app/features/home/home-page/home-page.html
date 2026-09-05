@@ -1,0 +1,59 @@
+<section class="app-home-section">
+  <h2>Derniers arrivages</h2>
+  @if (latest().length === 0 && !latestLoading()) {
+    <p>Aucune annonce pour l'instant.</p>
+  } @else {
+    <div class="app-home-section__grid">
+      @for (listing of latest(); track listing.id) {
+        <app-card
+          [title]="listing.gameName"
+          [price]="listing.price"
+          [imageUrl]="listing.imageUrls[0] ?? null"
+          [routerLink]="['/listings', listing.id]"
+          [featured]="listing.featured"
+          [sold]="listing.status === 'SOLD'"
+        />
+      }
+    </div>
+  }
+</section>
+
+<section class="app-home-section">
+  <h2>Pépites</h2>
+  @if (featured().length === 0 && !featuredLoading()) {
+    <p>Aucune annonce pour l'instant.</p>
+  } @else {
+    <div class="app-home-section__grid">
+      @for (listing of featured(); track listing.id) {
+        <app-card
+          [title]="listing.gameName"
+          [price]="listing.price"
+          [imageUrl]="listing.imageUrls[0] ?? null"
+          [routerLink]="['/listings', listing.id]"
+          [featured]="listing.featured"
+          [sold]="listing.status === 'SOLD'"
+        />
+      }
+    </div>
+  }
+</section>
+
+<section class="app-home-section">
+  <h2>Petits prix</h2>
+  @if (cheap().length === 0 && !cheapLoading()) {
+    <p>Aucune annonce pour l'instant.</p>
+  } @else {
+    <div class="app-home-section__grid">
+      @for (listing of cheap(); track listing.id) {
+        <app-card
+          [title]="listing.gameName"
+          [price]="listing.price"
+          [imageUrl]="listing.imageUrls[0] ?? null"
+          [routerLink]="['/listings', listing.id]"
+          [featured]="listing.featured"
+          [sold]="listing.status === 'SOLD'"
+        />
+      }
+    </div>
+  }
+</section>

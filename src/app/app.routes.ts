@@ -6,18 +6,16 @@ import { PageStub } from './shared/ui/page-stub/page-stub';
 export const routes: Routes = [
   {
     path: '',
-    component: PageStub,
-    data: { title: 'Accueil' },
+    loadComponent: () => import('./features/home/home-page/home-page').then((m) => m.HomePage),
   },
   {
     path: 'market',
-    component: PageStub,
-    data: { title: 'Market' },
+    loadComponent: () => import('./features/market/market-page/market-page').then((m) => m.MarketPage),
   },
   {
     path: 'listings/:id',
-    component: PageStub,
-    data: { title: 'Détail annonce' },
+    loadComponent: () =>
+      import('./features/market/listing-detail-page/listing-detail-page').then((m) => m.ListingDetailPage),
   },
   {
     path: 'auth/login',
