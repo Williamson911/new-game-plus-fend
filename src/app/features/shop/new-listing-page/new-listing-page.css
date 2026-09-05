@@ -1,0 +1,19 @@
+.app-new-listing-page__search input,
+.app-new-listing-page #release-date,
+.app-new-listing-page #weight-grams,
+.app-new-listing-page #listing-price {
+  font-family: var(--font-body);
+  padding: var(--space-2);
+  border: 2px solid var(--color-navy);
+  border-radius: var(--radius);
+}
+
+.app-new-listing-page__results {
+  list-style: none;
+  padding: 0;
+}
+
+.app-new-listing-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}

@@ -1,0 +1,23 @@
+.app-my-shop-orders-page__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.app-my-shop-orders-page__order {
+  border: 2px solid var(--color-navy);
+  padding: var(--space-3);
+}
+
+.app-my-shop-orders-page__address {
+  color: var(--color-navy);
+  font-size: 0.9em;
+}
+
+.app-my-shop-orders-page__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}

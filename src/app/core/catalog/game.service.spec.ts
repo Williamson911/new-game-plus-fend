@@ -31,4 +31,31 @@ describe('GameService', () => {
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
+
+  it('search() calls GET /games with name, page, and size', () => {
+    service.search('zelda', 0, 10).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/games?name=zelda&page=0&size=10`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 10 });
+  });
+
+  it('create() calls POST /games with the full game payload', () => {
+    const request = {
+      name: 'New Game',
+      description: 'desc',
+      genreIds: ['g1'],
+      publisher: 'Pub',
+      developer: 'Dev',
+      platform: 'PC',
+      releaseDate: '2020-01-01',
+      coverURL: null,
+      igdbID: null,
+      weightGrams: 200,
+    };
+    service.create(request).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/games`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(request);
+    req.flush({});
+  });
 });

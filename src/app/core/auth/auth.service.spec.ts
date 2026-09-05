@@ -208,6 +208,14 @@ describe('AuthService', () => {
       expect(service.currentUser()).toBeNull();
     });
 
+    it('applyNewToken() decodes and applies a new token, updating roles and authentication state', () => {
+      service.applyNewToken(validToken(['BUYER', 'SELLER']));
+
+      expect(service.isAuthenticated()).toBe(true);
+      expect(service.roles()).toEqual(['BUYER', 'SELLER']);
+      expect(tokenStorage.getToken()).not.toBeNull();
+    });
+
     it('hasRole() reflects the roles decoded from the token', () => {
       service.login({ email: 'will@test.dev', password: 'secret' }).subscribe();
       httpMock.expectOne(`${environment.apiUrl}/auth/login`).flush({ token: validToken(['SELLER']) });

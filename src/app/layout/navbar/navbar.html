@@ -6,11 +6,8 @@
   <nav class="app-navbar__links">
     <a routerLink="/market" routerLinkActive="is-active">Market</a>
 
-    @if (authService.hasRole('SELLER')) {
-      <a routerLink="/my-shop" routerLinkActive="is-active">My Shop</a>
-    }
-
     @if (authService.isAuthenticated()) {
+      <a routerLink="/my-shop" routerLinkActive="is-active">My Shop</a>
       <a routerLink="/profile" routerLinkActive="is-active">Profile</a>
       <a routerLink="/cart" routerLinkActive="is-active">Cart</a>
       <button type="button" class="app-navbar__logout" (click)="logout()">Logout</button>

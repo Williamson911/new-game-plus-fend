@@ -1,0 +1,75 @@
+<section class="app-new-listing-page">
+  <h1>Créer une annonce</h1>
+
+  @if (!selectedGame()) {
+    <div class="app-new-listing-page__search">
+      <app-text-field
+        label="Rechercher un jeu existant"
+        placeholder="Nom du jeu..."
+        [formControl]="searchControl"
+      />
+
+      @if (searchResults().length > 0) {
+        <ul class="app-new-listing-page__results">
+          @for (game of searchResults(); track game.id) {
+            <li>
+              {{ game.name }} ({{ game.platform }})
+              <app-button type="button" (pressed)="selectGame(game)">Choisir</app-button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <app-button type="button" variant="secondary" (pressed)="showCreateGameForm.set(!showCreateGameForm())">
+      Créer un nouveau jeu
+    </app-button>
+
+    @if (showCreateGameForm()) {
+      <form [formGroup]="newGameForm" (ngSubmit)="createGame()" class="app-new-listing-page__game-form">
+        <app-text-field label="Nom" formControlName="name" />
+        <app-text-field label="Description" formControlName="description" />
+        <app-text-field label="Éditeur" formControlName="publisher" />
+        <app-text-field label="Développeur" formControlName="developer" />
+        <app-text-field label="Plateforme" formControlName="platform" />
+
+        <label for="release-date">Date de sortie</label>
+        <input id="release-date" type="date" formControlName="releaseDate" />
+
+        <app-text-field label="URL de la jaquette (optionnel)" formControlName="coverURL" />
+
+        <label for="weight-grams">Poids (grammes)</label>
+        <input id="weight-grams" type="number" formControlName="weightGrams" />
+
+        <fieldset>
+          <legend>Genres</legend>
+          @for (genre of genres(); track genre.id) {
+            <label>
+              <input
+                type="checkbox"
+                [checked]="selectedGenreIds().includes(genre.id)"
+                (change)="toggleGenre(genre.id)"
+              />
+              {{ genre.name }}
+            </label>
+          }
+        </fieldset>
+
+        <app-button type="submit">Créer le jeu</app-button>
+      </form>
+    }
+  } @else {
+    <p>Jeu sélectionné : {{ selectedGame()!.name }}</p>
+
+    <form [formGroup]="priceForm" (ngSubmit)="createListing()">
+      <label for="listing-price">Prix</label>
+      <input id="listing-price" type="number" formControlName="price" />
+
+      @if (error()) {
+        <p class="app-new-listing-page__error">{{ error() }}</p>
+      }
+
+      <app-button type="submit" [disabled]="submitting()">Créer l'annonce</app-button>
+    </form>
+  }
+</section>

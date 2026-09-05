@@ -65,6 +65,10 @@ export class AuthService {
     return this.http.post<void>(`${environment.apiUrl}/auth/reset-password`, payload);
   }
 
+  applyNewToken(token: string): void {
+    this.applyToken(token);
+  }
+
   logout(): void {
     this.tokenStorage.clearToken();
     this._currentUser.set(null);

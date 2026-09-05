@@ -53,14 +53,19 @@ export const routes: Routes = [
   },
   {
     path: 'my-shop',
-    component: PageStub,
-    data: { title: 'My Shop' },
+    loadComponent: () => import('./features/shop/my-shop-page/my-shop-page').then((m) => m.MyShopPage),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'my-shop/listings/new',
+    loadComponent: () =>
+      import('./features/shop/new-listing-page/new-listing-page').then((m) => m.NewListingPage),
     canActivate: [authGuard, roleGuard('SELLER')],
   },
   {
     path: 'my-shop/orders',
-    component: PageStub,
-    data: { title: 'Commandes de ma boutique' },
+    loadComponent: () =>
+      import('./features/shop/my-shop-orders-page/my-shop-orders-page').then((m) => m.MyShopOrdersPage),
     canActivate: [authGuard, roleGuard('SELLER')],
   },
   {

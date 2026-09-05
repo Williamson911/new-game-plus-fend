@@ -44,16 +44,19 @@ describe('Navbar', () => {
     expect(el.textContent).toContain('Logout');
   });
 
-  it('only shows My Shop when the user has the SELLER role', () => {
+  it('shows My Shop for any authenticated user, regardless of role', () => {
     authService.isAuthenticatedSignal.set(true);
-    const fixtureWithoutRole = TestBed.createComponent(Navbar);
-    fixtureWithoutRole.detectChanges();
-    expect((fixtureWithoutRole.nativeElement as HTMLElement).textContent).not.toContain('My Shop');
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
 
-    authService.rolesSignal.set(['SELLER']);
-    const fixtureWithRole = TestBed.createComponent(Navbar);
-    fixtureWithRole.detectChanges();
-    expect((fixtureWithRole.nativeElement as HTMLElement).textContent).toContain('My Shop');
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('My Shop');
+  });
+
+  it('does not show My Shop when not authenticated', () => {
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('My Shop');
   });
 
   it('calls AuthService.logout() when the logout button is clicked', () => {

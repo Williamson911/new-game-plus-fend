@@ -1,0 +1,43 @@
+@if (loading()) {
+  <p>Chargement...</p>
+} @else if (orders().length === 0) {
+  <p>Aucune commande pour l'instant.</p>
+} @else {
+  <ul class="app-my-shop-orders-page__list">
+    @for (order of orders(); track order.id) {
+      <li class="app-my-shop-orders-page__order">
+        <p>{{ order.buyerUsername }} ({{ order.buyerEmail }})</p>
+        <p>Statut : {{ order.status }}</p>
+        <ul>
+          @for (item of order.items; track item.listingId) {
+            <li>{{ item.gameName }} — {{ item.price }} €</li>
+          }
+        </ul>
+        <p>Livraison : {{ order.shippingCost }} € ({{ order.deliveryMode }})</p>
+        @if (order.deliveryMode === 'HOME' && order.shippingAddress) {
+          <p class="app-my-shop-orders-page__address">
+            {{ order.shippingAddress.street }} {{ order.shippingAddress.streetNumber }},
+            {{ order.shippingAddress.postCode }} {{ order.shippingAddress.city }},
+            {{ order.shippingAddress.country }}
+          </p>
+        }
+        @if (order.deliveryMode === 'RELAY_POINT' && order.relayPoint) {
+          <p class="app-my-shop-orders-page__address">
+            {{ order.relayPoint.relayName }} — {{ order.relayPoint.relayStreet }},
+            {{ order.relayPoint.relayPostCode }} {{ order.relayPoint.relayCity }},
+            {{ order.relayPoint.relayCountry }}
+          </p>
+        }
+        <p>Total : {{ orderTotal(order) }} €</p>
+
+        @if (nextStatusesFor(order).length > 0) {
+          <div class="app-my-shop-orders-page__actions">
+            @for (status of nextStatusesFor(order); track status) {
+              <app-button type="button" (pressed)="updateStatus(order, status)">{{ status }}</app-button>
+            }
+          </div>
+        }
+      </li>
+    }
+  </ul>
+}

@@ -75,4 +75,34 @@ describe('ListingService', () => {
     expect(req.request.params.has('minPrice')).toBe(false);
     req.flush({ content: [], totalElements: 0, totalPages: 0, number: 1, size: 12 });
   });
+
+  it('getMine() calls GET /listings/mine with page and size', () => {
+    service.getMine(0, 12).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/listings/mine?page=0&size=12`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 12 });
+  });
+
+  it('create() calls POST /listings with gameId and price', () => {
+    service.create({ gameId: 'g1', price: 20 }).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/listings`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ gameId: 'g1', price: 20 });
+    req.flush({});
+  });
+
+  it('updatePrice() calls PUT /listings/{id} with gameId and price', () => {
+    service.updatePrice('l1', 'g1', 25).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/listings/l1`);
+    expect(req.request.method).toBe('PUT');
+    expect(req.request.body).toEqual({ gameId: 'g1', price: 25 });
+    req.flush({});
+  });
+
+  it('delete() calls DELETE /listings/{id}', () => {
+    service.delete('l1').subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/listings/l1`);
+    expect(req.request.method).toBe('DELETE');
+    req.flush(null);
+  });
 });

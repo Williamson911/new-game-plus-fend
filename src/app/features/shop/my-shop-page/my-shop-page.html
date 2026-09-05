@@ -1,0 +1,70 @@
+@if (loadingShop()) {
+  <p>Chargement...</p>
+} @else if (!shop()) {
+  <section class="app-my-shop-page">
+    <h1>Créer ma boutique</h1>
+    <form [formGroup]="createForm" (ngSubmit)="createShop()">
+      <app-text-field label="Nom de la boutique" formControlName="name" />
+      <app-text-field label="Description" formControlName="description" />
+      @if (createError()) {
+        <p class="app-my-shop-page__error">{{ createError() }}</p>
+      }
+      <app-button type="submit" [disabled]="creating()">Créer</app-button>
+    </form>
+  </section>
+} @else {
+  <section class="app-my-shop-page">
+    <h1>{{ shop()!.name }}</h1>
+    <p>{{ shop()!.description }}</p>
+
+    <a routerLink="/my-shop/listings/new"><app-button type="button">Créer une annonce</app-button></a>
+
+    @if (actionError()) {
+      <p class="app-my-shop-page__error">{{ actionError() }}</p>
+    }
+
+    @if (loadingListings()) {
+      <p>Chargement des annonces...</p>
+    } @else if (listings().length === 0) {
+      <p>Aucune annonce pour l'instant.</p>
+    } @else {
+      <ul class="app-my-shop-page__listings">
+        @for (listing of listings(); track listing.id) {
+          <li class="app-my-shop-page__listing">
+            <span>{{ listing.gameName }}</span>
+            <app-badge
+              [variant]="listing.status === 'SOLD' ? 'sold' : 'featured'"
+              [label]="listing.status === 'SOLD' ? 'Vendu' : 'Disponible'"
+            />
+
+            @if (editingListingId() === listing.id) {
+              <form [formGroup]="editPriceForm" (ngSubmit)="saveEditPrice(listing)">
+                <input type="number" formControlName="price" />
+                <app-button type="submit">Enregistrer</app-button>
+                <app-button type="button" variant="secondary" (pressed)="cancelEditPrice()">Annuler</app-button>
+              </form>
+            } @else {
+              <span>{{ listing.price }} €</span>
+              <app-button type="button" variant="secondary" (pressed)="startEditPrice(listing)">
+                Modifier le prix
+              </app-button>
+            }
+
+            <app-button
+              type="button"
+              variant="secondary"
+              [disabled]="listing.status === 'SOLD'"
+              (pressed)="deleteListing(listing)"
+            >
+              Supprimer
+            </app-button>
+          </li>
+        }
+      </ul>
+    }
+
+    <app-button type="button" variant="secondary" [disabled]="deletingShop()" (pressed)="deleteShop()">
+      Supprimer ma boutique
+    </app-button>
+  </section>
+}

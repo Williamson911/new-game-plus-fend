@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ListingFilters, ListingResponse, Page } from './catalog.types';
+import { ListingCreateRequest } from '../shop/shop.types';
 
 @Injectable({ providedIn: 'root' })
 export class ListingService {
@@ -47,5 +48,22 @@ export class ListingService {
     }
 
     return this.http.get<Page<ListingResponse>>(`${environment.apiUrl}/listings`, { params });
+  }
+
+  getMine(page: number, size = 12): Observable<Page<ListingResponse>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<Page<ListingResponse>>(`${environment.apiUrl}/listings/mine`, { params });
+  }
+
+  create(request: ListingCreateRequest): Observable<ListingResponse> {
+    return this.http.post<ListingResponse>(`${environment.apiUrl}/listings`, request);
+  }
+
+  updatePrice(id: string, gameId: string, price: number): Observable<ListingResponse> {
+    return this.http.put<ListingResponse>(`${environment.apiUrl}/listings/${id}`, { gameId, price });
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/listings/${id}`);
   }
 }
