@@ -1,0 +1,31 @@
+<section class="app-profile-page">
+  <h1>Profil</h1>
+
+  @if (loading()) {
+    <p>Chargement...</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <app-text-field label="Nom d'utilisateur" formControlName="username" />
+      <app-text-field label="Email" type="email" formControlName="email" />
+
+      @if (updateError()) {
+        <p class="app-profile-page__error">{{ updateError() }}</p>
+      }
+      @if (updateSuccess()) {
+        <p class="app-profile-page__success">Profil mis à jour ✓</p>
+      }
+
+      <app-button type="submit" [disabled]="updating()">Enregistrer</app-button>
+    </form>
+
+    <section class="app-profile-page__danger-zone">
+      <h2>Supprimer mon compte</h2>
+      @if (deleteError()) {
+        <p class="app-profile-page__error">{{ deleteError() }}</p>
+      }
+      <app-button type="button" variant="secondary" [disabled]="deletingAccount()" (pressed)="deleteAccount()">
+        Supprimer mon compte
+      </app-button>
+    </section>
+  }
+</section>

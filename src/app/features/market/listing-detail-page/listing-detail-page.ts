@@ -1,6 +1,7 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 import { catchError, of as rxOf, switchMap } from 'rxjs';
 import { ListingService } from '../../../core/catalog/listing.service';
 import { GameService } from '../../../core/catalog/game.service';
@@ -11,7 +12,7 @@ import { GameResponse, ListingResponse } from '../../../core/catalog/catalog.typ
 
 @Component({
   selector: 'app-listing-detail-page',
-  imports: [CurrencyPipe, Badge, Button],
+  imports: [CurrencyPipe, RouterLink, Badge, Button],
   templateUrl: './listing-detail-page.html',
   styleUrl: './listing-detail-page.css',
 })

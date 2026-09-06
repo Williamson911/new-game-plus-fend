@@ -8,6 +8,7 @@ export interface Page<T> {
 
 export interface ListingResponse {
   id: string;
+  shopId: string;
   gameId: string;
   gameName: string;
   shopName: string;
@@ -41,4 +42,5 @@ export interface ListingFilters {
   platform: string;
   minPrice: number | null;
   maxPrice: number | null;
+  shopId: string;
 }

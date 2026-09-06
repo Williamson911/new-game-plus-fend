@@ -1,0 +1,51 @@
+@if (loading()) {
+  <p>Chargement...</p>
+} @else if (notFound()) {
+  <p class="app-shop-page__error">Boutique introuvable.</p>
+} @else if (shop()) {
+  <section class="app-shop-page">
+    <header class="app-shop-page__header">
+      <h1>{{ shop()!.name }}</h1>
+      <p>{{ shop()!.description }}</p>
+      @if (averageRating() !== null) {
+        <p class="app-shop-page__rating">{{ averageRating()!.toFixed(1) }}/5 · {{ reviews().length }} avis</p>
+      } @else {
+        <p class="app-shop-page__rating">Pas encore d'avis</p>
+      }
+    </header>
+
+    <h2>Annonces disponibles</h2>
+    @if (listings().length === 0) {
+      <p>Aucune annonce disponible pour l'instant.</p>
+    } @else {
+      <div class="app-shop-page__grid">
+        @for (listing of listings(); track listing.id) {
+          <app-card
+            [title]="listing.gameName"
+            [price]="listing.price"
+            [imageUrl]="listing.imageUrls[0] ?? null"
+            [routerLink]="['/listings', listing.id]"
+            [featured]="listing.featured"
+            [sold]="listing.status === 'SOLD'"
+          />
+        }
+      </div>
+    }
+
+    <h2>Avis</h2>
+    @if (reviews().length === 0) {
+      <p>Aucun avis pour l'instant.</p>
+    } @else {
+      <ul class="app-shop-page__reviews">
+        @for (review of reviews(); track review.id) {
+          <li class="app-shop-page__review">
+            <p><strong>{{ review.authorUsername }}</strong> — {{ review.rating }}/5</p>
+            @if (review.comment) {
+              <p>{{ review.comment }}</p>
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

@@ -13,6 +13,7 @@ import {
   RegisterRequest,
   RegisterResponse,
   ResetPasswordRequest,
+  UpdateProfileRequest,
 } from './auth.types';
 
 @Injectable({ providedIn: 'root' })
@@ -63,6 +64,16 @@ export class AuthService {
 
   resetPassword(payload: ResetPasswordRequest): Observable<void> {
     return this.http.post<void>(`${environment.apiUrl}/auth/reset-password`, payload);
+  }
+
+  updateProfile(request: UpdateProfileRequest): Observable<MeResponse> {
+    return this.http
+      .put<MeResponse>(`${environment.apiUrl}/profile`, request)
+      .pipe(tap((me) => this._currentUser.set(me)));
+  }
+
+  deleteAccount(): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/account`);
   }
 
   applyNewToken(token: string): void {

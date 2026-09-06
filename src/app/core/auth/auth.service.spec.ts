@@ -198,6 +198,28 @@ describe('AuthService', () => {
       req.flush(null);
     });
 
+    it('updateProfile() puts to /profile and updates currentUser on success', () => {
+      let resolved: unknown;
+      service
+        .updateProfile({ username: 'newname', email: 'newname@test.dev' })
+        .subscribe((r) => (resolved = r));
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/profile`);
+      expect(req.request.method).toBe('PUT');
+      expect(req.request.body).toEqual({ username: 'newname', email: 'newname@test.dev' });
+      req.flush({ id: 'u1', username: 'newname', email: 'newname@test.dev', createdAt: '2026-01-01T00:00:00' });
+
+      expect(resolved).toEqual({ id: 'u1', username: 'newname', email: 'newname@test.dev', createdAt: '2026-01-01T00:00:00' });
+      expect(service.currentUser()?.username).toBe('newname');
+    });
+
+    it('deleteAccount() calls DELETE /account', () => {
+      service.deleteAccount().subscribe();
+      const req = httpMock.expectOne(`${environment.apiUrl}/account`);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(null);
+    });
+
     it('logout() clears the token and resets auth state', () => {
       tokenStorage.setToken(validToken());
       service.logout();

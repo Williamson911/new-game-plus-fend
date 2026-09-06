@@ -76,6 +76,32 @@ describe('ListingService', () => {
     req.flush({ content: [], totalElements: 0, totalPages: 0, number: 1, size: 12 });
   });
 
+  it('search() includes shopId when present', () => {
+    service.search({ shopId: 's1' }, 0, 12).subscribe();
+
+    const req = httpMock.expectOne((r) => r.url === `${environment.apiUrl}/listings`);
+    expect(req.request.params.get('shopId')).toBe('s1');
+    req.flush({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 12 });
+  });
+
+  it('setFeatured() calls PATCH /listings/{id}/featured with the featured flag', () => {
+    service.setFeatured('l1', true).subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/listings/l1/featured`);
+    expect(req.request.method).toBe('PATCH');
+    expect(req.request.body).toEqual({ featured: true });
+    req.flush({
+      id: 'l1',
+      shopId: 's1',
+      gameId: 'g1',
+      gameName: 'Kingdom Hearts',
+      shopName: 'Retro Shop',
+      price: 20,
+      status: 'AVAILABLE',
+      featured: true,
+      imageUrls: [],
+    });
+  });
+
   it('getMine() calls GET /listings/mine with page and size', () => {
     service.getMine(0, 12).subscribe();
     const req = httpMock.expectOne(`${environment.apiUrl}/listings/mine?page=0&size=12`);

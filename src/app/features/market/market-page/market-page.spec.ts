@@ -14,6 +14,7 @@ function makePage(content: ListingResponse[] = [], totalPages = 1, number = 0): 
 function makeListing(overrides: Partial<ListingResponse> = {}): ListingResponse {
   return {
     id: '1',
+    shopId: 's1',
     gameId: 'g1',
     gameName: 'Kingdom Hearts',
     shopName: 'Retro Shop',

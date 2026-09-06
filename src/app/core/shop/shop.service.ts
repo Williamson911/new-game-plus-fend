@@ -19,6 +19,10 @@ export class ShopService {
     );
   }
 
+  getById(id: string): Observable<ShopResponse> {
+    return this.http.get<ShopResponse>(`${environment.apiUrl}/shops/${id}`);
+  }
+
   create(request: ShopRequest): Observable<ShopCreationResponse> {
     return this.http.post<ShopCreationResponse>(`${environment.apiUrl}/shops`, request);
   }

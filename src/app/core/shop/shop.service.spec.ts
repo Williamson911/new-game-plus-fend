@@ -38,6 +38,13 @@ describe('ShopService', () => {
     expect(result).toBeNull();
   });
 
+  it('getById() calls GET /shops/{id}', () => {
+    service.getById('s1').subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/shops/s1`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ id: 's1', name: 'Retro Shop', description: 'A shop' });
+  });
+
   it('create() calls POST /shops', () => {
     service.create({ name: 'Retro Shop', description: 'desc' }).subscribe();
 

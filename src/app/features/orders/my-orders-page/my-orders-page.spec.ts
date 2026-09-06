@@ -3,6 +3,7 @@ import { of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MyOrdersPage } from './my-orders-page';
 import { OrderService } from '../../../core/shop/order.service';
+import { ReviewService } from '../../../core/reviews/review.service';
 import { OrderResponse } from '../../../core/shop/shop.types';
 
 function makeOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
@@ -18,20 +19,26 @@ function makeOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
     shippingCost: 5,
     createdAt: '2026-01-01T00:00:00',
     items: [{ listingId: 'l1', gameName: 'Kingdom Hearts', price: 20 }],
+    reviewed: false,
     ...overrides,
   };
 }
 
 describe('MyOrdersPage', () => {
   let orderService: { getMyOrders: ReturnType<typeof vi.fn>; cancel: ReturnType<typeof vi.fn> };
+  let reviewService: { create: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     orderService = {
       getMyOrders: vi.fn().mockReturnValue(of([makeOrder()])),
       cancel: vi.fn(),
     };
+    reviewService = { create: vi.fn() };
     TestBed.configureTestingModule({
-      providers: [{ provide: OrderService, useValue: orderService }],
+      providers: [
+        { provide: OrderService, useValue: orderService },
+        { provide: ReviewService, useValue: reviewService },
+      ],
     });
   });
 
@@ -141,5 +148,57 @@ describe('MyOrdersPage', () => {
 
     const buttons = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button'));
     expect(buttons.some((b) => b.textContent?.includes('Annuler'))).toBe(false);
+  });
+
+  it('shows a review form for a DELIVERED order with no review yet', () => {
+    orderService.getMyOrders.mockReturnValue(of([makeOrder({ status: 'DELIVERED', reviewed: false })]));
+    const fixture = TestBed.createComponent(MyOrdersPage);
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Laisser un avis');
+  });
+
+  it('does not show a review form for a DELIVERED order that already has one', () => {
+    orderService.getMyOrders.mockReturnValue(of([makeOrder({ status: 'DELIVERED', reviewed: true })]));
+    const fixture = TestBed.createComponent(MyOrdersPage);
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Laisser un avis');
+  });
+
+  it('submitReview() creates the review and marks the order as reviewed on success', () => {
+    orderService.getMyOrders.mockReturnValue(of([makeOrder({ status: 'DELIVERED', reviewed: false })]));
+    reviewService.create.mockReturnValue(of({ id: 'rv1', authorUsername: 'will', rating: 5, comment: null, createdAt: '2026-01-01T00:00:00' }));
+    const fixture = TestBed.createComponent(MyOrdersPage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.submitReview(makeOrder({ status: 'DELIVERED', reviewed: false }));
+
+    expect(reviewService.create).toHaveBeenCalledWith({ orderId: 'o1', rating: 5, comment: null });
+    expect(fixture.componentInstance.orders()[0].reviewed).toBe(true);
+  });
+
+  it('submitReview() marks the order as reviewed even on a 409 (already reviewed elsewhere)', () => {
+    orderService.getMyOrders.mockReturnValue(of([makeOrder({ status: 'DELIVERED', reviewed: false })]));
+    reviewService.create.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 409 })));
+    const fixture = TestBed.createComponent(MyOrdersPage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.submitReview(makeOrder({ status: 'DELIVERED', reviewed: false }));
+
+    expect(fixture.componentInstance.orders()[0].reviewed).toBe(true);
+    expect(fixture.componentInstance.reviewErrors()['o1']).toBeTruthy();
+  });
+
+  it('submitReview() shows a generic error and keeps the form on a non-409 failure', () => {
+    orderService.getMyOrders.mockReturnValue(of([makeOrder({ status: 'DELIVERED', reviewed: false })]));
+    reviewService.create.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 500 })));
+    const fixture = TestBed.createComponent(MyOrdersPage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.submitReview(makeOrder({ status: 'DELIVERED', reviewed: false }));
+
+    expect(fixture.componentInstance.orders()[0].reviewed).toBe(false);
+    expect(fixture.componentInstance.reviewErrors()['o1']).toBeTruthy();
   });
 });

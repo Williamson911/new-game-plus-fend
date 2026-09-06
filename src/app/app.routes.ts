@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
-import { PageStub } from './shared/ui/page-stub/page-stub';
 
 export const routes: Routes = [
   {
@@ -16,6 +15,10 @@ export const routes: Routes = [
     path: 'listings/:id',
     loadComponent: () =>
       import('./features/market/listing-detail-page/listing-detail-page').then((m) => m.ListingDetailPage),
+  },
+  {
+    path: 'shops/:id',
+    loadComponent: () => import('./features/shop/shop-page/shop-page').then((m) => m.ShopPage),
   },
   {
     path: 'auth/login',
@@ -41,8 +44,7 @@ export const routes: Routes = [
   },
   {
     path: 'profile',
-    component: PageStub,
-    data: { title: 'Profil' },
+    loadComponent: () => import('./features/profile/profile-page/profile-page').then((m) => m.ProfilePage),
     canActivate: [authGuard],
   },
   {
@@ -89,8 +91,8 @@ export const routes: Routes = [
   },
   {
     path: 'admin/listings',
-    component: PageStub,
-    data: { title: 'Curation — Pépites' },
+    loadComponent: () =>
+      import('./features/admin/admin-listings-page/admin-listings-page').then((m) => m.AdminListingsPage),
     canActivate: [authGuard, roleGuard('ADMIN')],
   },
   {

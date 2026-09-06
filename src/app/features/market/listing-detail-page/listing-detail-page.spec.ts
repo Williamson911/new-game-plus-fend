@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { Subject, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ListingDetailPage } from './listing-detail-page';
@@ -10,6 +11,7 @@ import { GameResponse, ListingResponse } from '../../../core/catalog/catalog.typ
 function makeListing(overrides: Partial<ListingResponse> = {}): ListingResponse {
   return {
     id: 'l1',
+    shopId: 's1',
     gameId: 'g1',
     gameName: 'Kingdom Hearts',
     shopName: 'Retro Shop',
@@ -48,6 +50,7 @@ describe('ListingDetailPage', () => {
     cartService = { addItem: vi.fn() };
     TestBed.configureTestingModule({
       providers: [
+        provideRouter([]),
         { provide: ListingService, useValue: listingService },
         { provide: GameService, useValue: gameService },
         { provide: CartService, useValue: cartService },
@@ -68,6 +71,18 @@ describe('ListingDetailPage', () => {
     expect(fixture.componentInstance.listing()?.gameName).toBe('Kingdom Hearts');
     expect(fixture.componentInstance.game()?.publisher).toBe('Square Enix');
     expect(fixture.componentInstance.loading()).toBe(false);
+  });
+
+  it('links the shop name to its public shop page', () => {
+    listingService.getById.mockReturnValue(of(makeListing({ shopId: 's42', shopName: 'Retro Shop' })));
+    gameService.getById.mockReturnValue(of(makeGame()));
+
+    const fixture = TestBed.createComponent(ListingDetailPage);
+    fixture.componentRef.setInput('id', 'l1');
+    fixture.detectChanges();
+
+    const link = (fixture.nativeElement as HTMLElement).querySelector('a[href="/shops/s42"]');
+    expect(link?.textContent).toContain('Retro Shop');
   });
 
   it('shows a not-found state when the listing fetch fails', () => {

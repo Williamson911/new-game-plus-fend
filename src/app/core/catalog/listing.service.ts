@@ -46,6 +46,9 @@ export class ListingService {
     if (filters.maxPrice !== null && filters.maxPrice !== undefined) {
       params = params.set('maxPrice', filters.maxPrice);
     }
+    if (filters.shopId) {
+      params = params.set('shopId', filters.shopId);
+    }
 
     return this.http.get<Page<ListingResponse>>(`${environment.apiUrl}/listings`, { params });
   }
@@ -65,5 +68,9 @@ export class ListingService {
 
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/listings/${id}`);
+  }
+
+  setFeatured(id: string, featured: boolean): Observable<ListingResponse> {
+    return this.http.patch<ListingResponse>(`${environment.apiUrl}/listings/${id}/featured`, { featured });
   }
 }

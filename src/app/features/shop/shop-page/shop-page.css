@@ -1,0 +1,32 @@
+.app-shop-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.app-shop-page__header {
+  margin-bottom: var(--space-4);
+}
+
+.app-shop-page__rating {
+  font-weight: 700;
+}
+
+.app-shop-page__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.app-shop-page__reviews {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.app-shop-page__review {
+  padding: var(--space-3);
+  border: 2px solid var(--color-navy);
+}

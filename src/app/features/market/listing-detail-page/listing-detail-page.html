@@ -33,7 +33,7 @@
         <dt>Date de sortie</dt>
         <dd>{{ game()!.releaseDate }}</dd>
         <dt>Boutique</dt>
-        <dd>{{ listing()!.shopName }}</dd>
+        <dd><a [routerLink]="['/shops', listing()!.shopId]">{{ listing()!.shopName }}</a></dd>
       </dl>
 
       @if (addedToCart()) {

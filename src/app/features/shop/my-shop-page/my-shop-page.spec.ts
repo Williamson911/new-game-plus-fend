@@ -11,6 +11,7 @@ import { ListingResponse } from '../../../core/catalog/catalog.types';
 function makeListing(overrides: Partial<ListingResponse> = {}): ListingResponse {
   return {
     id: 'l1',
+    shopId: 's1',
     gameId: 'g1',
     gameName: 'Kingdom Hearts',
     shopName: 'Retro Shop',

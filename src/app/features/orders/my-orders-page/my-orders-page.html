@@ -43,6 +43,17 @@
             Annuler cette commande
           </app-button>
         }
+
+        @if (order.status === 'DELIVERED' && !order.reviewed && reviewForms[order.id]) {
+          <form [formGroup]="reviewForms[order.id]" (ngSubmit)="submitReview(order)" class="app-my-orders-page__review-form">
+            <app-select-field label="Note" formControlName="rating" [options]="ratingOptions" />
+            <app-text-field label="Commentaire (optionnel)" formControlName="comment" />
+            @if (reviewErrors()[order.id]) {
+              <p class="app-my-orders-page__error">{{ reviewErrors()[order.id] }}</p>
+            }
+            <app-button type="submit" [disabled]="!!submittingReviewFor()">Laisser un avis</app-button>
+          </form>
+        }
       </li>
     }
   </ul>

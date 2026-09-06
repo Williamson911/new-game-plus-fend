@@ -1,0 +1,15 @@
+.app-profile-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.app-profile-page__success {
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+.app-profile-page__danger-zone {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--color-navy);
+}

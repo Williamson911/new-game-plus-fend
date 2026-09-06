@@ -17,6 +17,7 @@ function makeOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
     shippingCost: 5,
     createdAt: '2026-01-01T00:00:00',
     items: [{ listingId: 'l1', gameName: 'Kingdom Hearts', price: 20 }],
+    reviewed: false,
     ...overrides,
   };
 }

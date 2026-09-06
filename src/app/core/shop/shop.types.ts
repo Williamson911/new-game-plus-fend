@@ -69,4 +69,5 @@ export interface OrderResponse {
   shippingCost: number;
   createdAt: string;
   items: OrderItemResponse[];
+  reviewed: boolean;
 }
