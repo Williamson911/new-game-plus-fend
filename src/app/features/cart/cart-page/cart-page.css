@@ -1,0 +1,26 @@
+.app-cart-page__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.app-cart-page__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 2px solid var(--color-navy);
+}
+
+.app-cart-page__subtotal {
+  font-weight: 700;
+  margin-top: var(--space-4);
+}
+
+.app-cart-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}

@@ -1,0 +1,20 @@
+@if (loading()) {
+  <p>Chargement...</p>
+} @else if (items().length === 0) {
+  <p>Ton panier est vide. <a routerLink="/market">Parcourir le catalogue</a></p>
+} @else {
+  @if (actionError()) {
+    <p class="app-cart-page__error">{{ actionError() }}</p>
+  }
+  <ul class="app-cart-page__list">
+    @for (item of items(); track item.listingId) {
+      <li class="app-cart-page__item">
+        <span>{{ item.gameName }} ({{ item.shopName }})</span>
+        <span>{{ item.price }} €</span>
+        <app-button type="button" variant="secondary" (pressed)="removeItem(item.listingId)">Retirer</app-button>
+      </li>
+    }
+  </ul>
+  <p class="app-cart-page__subtotal">Sous-total : {{ subtotal() }} €</p>
+  <a routerLink="/checkout"><app-button type="button">Passer commande</app-button></a>
+}

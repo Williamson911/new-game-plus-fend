@@ -32,4 +32,18 @@ describe('OrderService', () => {
     expect(req.request.body).toEqual({ status: 'SHIPPED' });
     req.flush({});
   });
+
+  it('getMyOrders() calls GET /orders', () => {
+    service.getMyOrders().subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/orders`);
+    expect(req.request.method).toBe('GET');
+    req.flush([]);
+  });
+
+  it('cancel() calls PATCH /orders/{id}/cancel', () => {
+    service.cancel('o1').subscribe();
+    const req = httpMock.expectOne(`${environment.apiUrl}/orders/o1/cancel`);
+    expect(req.request.method).toBe('PATCH');
+    req.flush({});
+  });
 });

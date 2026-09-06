@@ -1,0 +1,6 @@
+.app-checkout-success-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}

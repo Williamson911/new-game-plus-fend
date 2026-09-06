@@ -36,7 +36,16 @@
         <dd>{{ listing()!.shopName }}</dd>
       </dl>
 
-      <app-button (pressed)="addToCart()">Ajouter au panier</app-button>
+      @if (addedToCart()) {
+        <p class="app-listing-detail__cart-confirm">Ajouté au panier ✓</p>
+      } @else {
+        <app-button [disabled]="addingToCart()" (pressed)="addToCart()"
+          >Ajouter au panier</app-button
+        >
+        @if (cartError()) {
+          <p class="app-listing-detail__cart-error">{{ cartError() }}</p>
+        }
+      }
     </div>
   </article>
 }

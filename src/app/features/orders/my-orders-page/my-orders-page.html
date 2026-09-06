@@ -1,0 +1,49 @@
+@if (loading()) {
+  <p>Chargement...</p>
+} @else if (orders().length === 0) {
+  <p>Tu n'as pas encore de commande.</p>
+} @else {
+  @if (actionError()) {
+    <p class="app-my-orders-page__error">{{ actionError() }}</p>
+  }
+  <ul class="app-my-orders-page__list">
+    @for (order of orders(); track order.id) {
+      <li class="app-my-orders-page__order">
+        <p>Boutique : {{ order.shopName }}</p>
+        <p>Statut : {{ order.status }}</p>
+        <ul>
+          @for (item of order.items; track item.listingId) {
+            <li>{{ item.gameName }} — {{ item.price }} €</li>
+          }
+        </ul>
+        <p>Livraison : {{ order.shippingCost }} € ({{ order.deliveryMode }})</p>
+        @if (order.deliveryMode === 'HOME' && order.shippingAddress) {
+          <p class="app-my-orders-page__address">
+            {{ order.shippingAddress.street }} {{ order.shippingAddress.streetNumber }},
+            {{ order.shippingAddress.postCode }} {{ order.shippingAddress.city }},
+            {{ order.shippingAddress.country }}
+          </p>
+        }
+        @if (order.deliveryMode === 'RELAY_POINT' && order.relayPoint) {
+          <p class="app-my-orders-page__address">
+            {{ order.relayPoint.relayName }} — {{ order.relayPoint.relayStreet }},
+            {{ order.relayPoint.relayPostCode }} {{ order.relayPoint.relayCity }},
+            {{ order.relayPoint.relayCountry }}
+          </p>
+        }
+        <p>Total : {{ orderTotal(order) }} €</p>
+
+        @if (order.status === 'PENDING') {
+          <app-button
+            type="button"
+            variant="secondary"
+            [disabled]="cancellingOrderId() === order.id"
+            (pressed)="cancelOrder(order)"
+          >
+            Annuler cette commande
+          </app-button>
+        }
+      </li>
+    }
+  </ul>
+}

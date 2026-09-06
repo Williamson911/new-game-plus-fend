@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ListingDetailPage } from './listing-detail-page';
 import { ListingService } from '../../../core/catalog/listing.service';
 import { GameService } from '../../../core/catalog/game.service';
+import { CartService } from '../../../core/cart/cart.service';
 import { GameResponse, ListingResponse } from '../../../core/catalog/catalog.types';
 
 function makeListing(overrides: Partial<ListingResponse> = {}): ListingResponse {
@@ -39,14 +40,17 @@ function makeGame(overrides: Partial<GameResponse> = {}): GameResponse {
 describe('ListingDetailPage', () => {
   let listingService: { getById: ReturnType<typeof vi.fn> };
   let gameService: { getById: ReturnType<typeof vi.fn> };
+  let cartService: { addItem: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     listingService = { getById: vi.fn() };
     gameService = { getById: vi.fn() };
+    cartService = { addItem: vi.fn() };
     TestBed.configureTestingModule({
       providers: [
         { provide: ListingService, useValue: listingService },
         { provide: GameService, useValue: gameService },
+        { provide: CartService, useValue: cartService },
       ],
     });
   });
@@ -67,7 +71,9 @@ describe('ListingDetailPage', () => {
   });
 
   it('shows a not-found state when the listing fetch fails', () => {
-    listingService.getById.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 404 })));
+    listingService.getById.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 404 })),
+    );
 
     const fixture = TestBed.createComponent(ListingDetailPage);
     fixture.componentRef.setInput('id', 'missing');
@@ -78,14 +84,63 @@ describe('ListingDetailPage', () => {
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('Annonce introuvable.');
   });
 
-  it('addToCart() is present and callable but does nothing observable this wave', () => {
+  it('addToCart() adds the listing to the cart and shows a confirmation', () => {
     listingService.getById.mockReturnValue(of(makeListing()));
     gameService.getById.mockReturnValue(of(makeGame()));
+    cartService.addItem.mockReturnValue(of({ items: [] }));
 
     const fixture = TestBed.createComponent(ListingDetailPage);
     fixture.componentRef.setInput('id', 'l1');
     fixture.detectChanges();
 
-    expect(() => fixture.componentInstance.addToCart()).not.toThrow();
+    fixture.componentInstance.addToCart();
+
+    expect(cartService.addItem).toHaveBeenCalledWith('l1');
+    expect(fixture.componentInstance.addedToCart()).toBe(true);
+  });
+
+  it('addToCart() shows an inline error when the listing is already in the cart or unavailable', () => {
+    listingService.getById.mockReturnValue(of(makeListing()));
+    gameService.getById.mockReturnValue(of(makeGame()));
+    cartService.addItem.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 409 })));
+
+    const fixture = TestBed.createComponent(ListingDetailPage);
+    fixture.componentRef.setInput('id', 'l1');
+    fixture.detectChanges();
+
+    fixture.componentInstance.addToCart();
+
+    expect(fixture.componentInstance.addedToCart()).toBe(false);
+    expect(fixture.componentInstance.cartError()).not.toBeNull();
+  });
+
+  it('addToCart() ignores a second call while a request is already in flight', () => {
+    listingService.getById.mockReturnValue(of(makeListing()));
+    gameService.getById.mockReturnValue(of(makeGame()));
+    const pending = new Subject<{ items: [] }>();
+    cartService.addItem.mockReturnValue(pending);
+
+    const fixture = TestBed.createComponent(ListingDetailPage);
+    fixture.componentRef.setInput('id', 'l1');
+    fixture.detectChanges();
+
+    fixture.componentInstance.addToCart();
+    fixture.componentInstance.addToCart();
+
+    expect(cartService.addItem).toHaveBeenCalledTimes(1);
+  });
+
+  it("addToCart() shows an inline error when the listing is the user's own", () => {
+    listingService.getById.mockReturnValue(of(makeListing()));
+    gameService.getById.mockReturnValue(of(makeGame()));
+    cartService.addItem.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 403 })));
+
+    const fixture = TestBed.createComponent(ListingDetailPage);
+    fixture.componentRef.setInput('id', 'l1');
+    fixture.detectChanges();
+
+    fixture.componentInstance.addToCart();
+
+    expect(fixture.componentInstance.cartError()).toContain('propre annonce');
   });
 });

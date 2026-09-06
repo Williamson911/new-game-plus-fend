@@ -40,3 +40,13 @@
   color: var(--color-accent);
   font-weight: 700;
 }
+
+.app-listing-detail__cart-confirm {
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+.app-listing-detail__cart-error {
+  color: var(--color-accent);
+  font-weight: 700;
+}

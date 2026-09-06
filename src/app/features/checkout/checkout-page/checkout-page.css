@@ -1,0 +1,32 @@
+.app-checkout-page__delivery-toggle {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.app-checkout-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.app-checkout-page__relay-results {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.app-checkout-page__summary {
+  border: 2px solid var(--color-navy);
+  padding: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.app-checkout-page__error {
+  color: var(--color-accent);
+  font-weight: 700;
+}

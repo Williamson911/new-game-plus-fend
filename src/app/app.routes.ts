@@ -47,8 +47,7 @@ export const routes: Routes = [
   },
   {
     path: 'orders',
-    component: PageStub,
-    data: { title: 'Mes commandes' },
+    loadComponent: () => import('./features/orders/my-orders-page/my-orders-page').then((m) => m.MyOrdersPage),
     canActivate: [authGuard],
   },
   {
@@ -70,25 +69,23 @@ export const routes: Routes = [
   },
   {
     path: 'cart',
-    component: PageStub,
-    data: { title: 'Panier' },
+    loadComponent: () => import('./features/cart/cart-page/cart-page').then((m) => m.CartPage),
     canActivate: [authGuard],
   },
   {
     path: 'checkout',
-    component: PageStub,
-    data: { title: 'Paiement' },
+    loadComponent: () => import('./features/checkout/checkout-page/checkout-page').then((m) => m.CheckoutPage),
     canActivate: [authGuard],
   },
   {
     path: 'checkout/success',
-    component: PageStub,
-    data: { title: 'Paiement réussi' },
+    loadComponent: () =>
+      import('./features/checkout/checkout-success-page/checkout-success-page').then((m) => m.CheckoutSuccessPage),
   },
   {
     path: 'checkout/cancel',
-    component: PageStub,
-    data: { title: 'Paiement annulé' },
+    loadComponent: () =>
+      import('./features/checkout/checkout-cancel-page/checkout-cancel-page').then((m) => m.CheckoutCancelPage),
   },
   {
     path: 'admin/listings',

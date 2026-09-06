@@ -30,18 +30,39 @@ describe('Navbar', () => {
 
     const el: HTMLElement = fixture.nativeElement;
     expect(el.textContent).toContain('Login');
-    expect(el.textContent).not.toContain('Logout');
+    expect(el.textContent).not.toContain('Déconnexion');
   });
 
-  it('shows Profile, Cart and Logout when authenticated', () => {
+  it('shows a cart icon link when authenticated', () => {
     authService.isAuthenticatedSignal.set(true);
     const fixture = TestBed.createComponent(Navbar);
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.textContent).toContain('Profile');
-    expect(el.textContent).toContain('Cart');
-    expect(el.textContent).toContain('Logout');
+    expect(el.querySelector('a[aria-label="Panier"]')).not.toBeNull();
+  });
+
+  it('shows a "Mon compte" trigger with an accessible menu when authenticated', () => {
+    authService.isAuthenticatedSignal.set(true);
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    const trigger = el.querySelector('.app-navbar__account-trigger');
+    expect(trigger?.textContent).toContain('Mon compte');
+    expect(trigger?.getAttribute('aria-haspopup')).toBe('true');
+    expect(el.querySelector('[role="menu"]')).not.toBeNull();
+  });
+
+  it('shows Profil, Mes commandes and Déconnexion when authenticated', () => {
+    authService.isAuthenticatedSignal.set(true);
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.textContent).toContain('Profil');
+    expect(el.textContent).toContain('Mes commandes');
+    expect(el.textContent).toContain('Déconnexion');
   });
 
   it('shows My Shop for any authenticated user, regardless of role', () => {
@@ -65,7 +86,7 @@ describe('Navbar', () => {
     fixture.detectChanges();
 
     const buttons = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('button'));
-    const logoutButton = buttons.find((b) => b.textContent?.includes('Logout')) as HTMLButtonElement;
+    const logoutButton = buttons.find((b) => b.textContent?.includes('Déconnexion')) as HTMLButtonElement;
     logoutButton.click();
 
     expect(authService.logout).toHaveBeenCalled();

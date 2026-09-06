@@ -15,4 +15,12 @@ export class OrderService {
   updateStatus(id: string, status: OrderStatus): Observable<OrderResponse> {
     return this.http.patch<OrderResponse>(`${environment.apiUrl}/orders/${id}/status`, { status });
   }
+
+  getMyOrders(): Observable<OrderResponse[]> {
+    return this.http.get<OrderResponse[]>(`${environment.apiUrl}/orders`);
+  }
+
+  cancel(id: string): Observable<OrderResponse> {
+    return this.http.patch<OrderResponse>(`${environment.apiUrl}/orders/${id}/cancel`, {});
+  }
 }

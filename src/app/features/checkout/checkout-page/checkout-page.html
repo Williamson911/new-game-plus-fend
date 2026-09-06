@@ -1,0 +1,74 @@
+@if (loading()) {
+  <p>Chargement...</p>
+} @else {
+  <section class="app-checkout-page">
+    <h1>Paiement</h1>
+
+    <div class="app-checkout-page__delivery-toggle">
+      <app-button
+        type="button"
+        [variant]="deliveryMode() === 'HOME' ? 'primary' : 'secondary'"
+        (pressed)="setDeliveryMode('HOME')"
+      >
+        Domicile
+      </app-button>
+      <app-button
+        type="button"
+        [variant]="deliveryMode() === 'RELAY_POINT' ? 'primary' : 'secondary'"
+        (pressed)="setDeliveryMode('RELAY_POINT')"
+      >
+        Point relais
+      </app-button>
+    </div>
+
+    @if (deliveryMode() === 'HOME') {
+      <form [formGroup]="addressForm" class="app-checkout-page__form">
+        <app-text-field label="Rue" formControlName="street" />
+        <app-text-field label="Numéro" formControlName="streetNumber" />
+        <app-text-field label="Code postal" formControlName="postCode" />
+        <app-text-field label="Ville" formControlName="city" />
+        <app-select-field label="Pays" formControlName="country" [options]="countryOptions" />
+      </form>
+    } @else {
+      <form [formGroup]="relaySearchForm" (ngSubmit)="searchRelayPoints()" class="app-checkout-page__form">
+        <app-text-field label="Code postal" formControlName="postCode" />
+        <app-select-field label="Pays" formControlName="country" [options]="countryOptions" />
+        <app-button type="submit" [disabled]="searchingRelayPoints()">Rechercher les points relais</app-button>
+      </form>
+
+      @if (relaySearchError()) {
+        <p class="app-checkout-page__error">{{ relaySearchError() }}</p>
+      }
+
+      @if (relayResults().length > 0) {
+        <ul class="app-checkout-page__relay-results">
+          @for (point of relayResults(); track point.id) {
+            <li>
+              <label>
+                <input
+                  type="radio"
+                  name="relay-point"
+                  [checked]="selectedRelayPoint()?.id === point.id"
+                  (change)="selectRelayPoint(point)"
+                />
+                {{ point.name }} — {{ point.street }}, {{ point.postCode }} {{ point.city }}
+              </label>
+            </li>
+          }
+        </ul>
+      }
+    }
+
+    <div class="app-checkout-page__summary">
+      <p>Sous-total : {{ subtotal() }} €</p>
+      <p>Livraison estimée : {{ estimatedShipping() }} €</p>
+      <p>Total estimé : {{ estimatedTotal() }} € — le montant exact sera confirmé sur la page de paiement Stripe</p>
+    </div>
+
+    @if (error()) {
+      <p class="app-checkout-page__error">{{ error() }}</p>
+    }
+
+    <app-button type="button" [disabled]="submitting()" (pressed)="submit()">Payer</app-button>
+  </section>
+}
