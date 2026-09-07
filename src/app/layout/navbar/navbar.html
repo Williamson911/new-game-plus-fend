@@ -9,13 +9,6 @@
 
       @if (authService.isAuthenticated()) {
         <a routerLink="/my-shop" routerLinkActive="is-active">My Shop</a>
-        <a routerLink="/cart" routerLinkActive="is-active" class="app-navbar__cart" aria-label="Panier">
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none" />
-            <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none" />
-            <path d="M2 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 7H6" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
         <div class="app-navbar__account">
           <button type="button" class="app-navbar__account-trigger" aria-haspopup="true">Mon compte</button>
           <div class="app-navbar__account-menu" role="menu">
@@ -24,6 +17,17 @@
             <button type="button" class="app-navbar__logout" role="menuitem" (click)="logout()">Déconnexion</button>
           </div>
         </div>
+        <a routerLink="/cart" routerLinkActive="is-active" class="app-navbar__cart" aria-label="Panier">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="9" cy="20" r="1.5" fill="currentColor" stroke="none" />
+            <circle cx="18" cy="20" r="1.5" fill="currentColor" stroke="none" />
+            <path d="M2 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 7H6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Panier
+          @if (cartService.itemCount() > 0) {
+            <span class="app-navbar__cart-count">{{ cartService.itemCount() }}</span>
+          }
+        </a>
       } @else {
         <a routerLink="/auth/login" routerLinkActive="is-active">Login</a>
       }

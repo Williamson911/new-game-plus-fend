@@ -6,7 +6,7 @@
   padding: var(--space-2) var(--space-4);
   border: 2px solid var(--color-navy);
   border-radius: var(--radius);
-  background: var(--color-accent);
+  background: var(--color-orange);
   color: var(--color-navy);
   cursor: pointer;
   transition: filter 0.15s ease, transform 0.15s ease, background-color 0.15s ease;

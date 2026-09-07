@@ -10,7 +10,7 @@ import { SelectField, SelectOption } from '../../../shared/ui/select-field/selec
 import { Button } from '../../../shared/ui/button/button';
 import { ListingResponse } from '../../../core/catalog/catalog.types';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 24;
 
 @Component({
   selector: 'app-market-page',

@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TextField } from '../../../shared/ui/text-field/text-field';
 import { Button } from '../../../shared/ui/button/button';
 
 @Component({
   selector: 'app-forgot-password-page',
-  imports: [ReactiveFormsModule, TextField, Button],
+  imports: [ReactiveFormsModule, RouterLink, TextField, Button],
   templateUrl: './forgot-password-page.html',
   styleUrl: './forgot-password-page.css',
 })

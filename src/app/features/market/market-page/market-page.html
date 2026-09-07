@@ -17,7 +17,13 @@
       </div>
     </div>
 
-    <app-button type="button" [bordered]="false" (pressed)="reset()">Réinitialiser</app-button>
+    <app-button
+      type="button"
+      class="app-market-page__reset"
+      [bordered]="false"
+      (pressed)="reset()"
+      >Réinitialiser</app-button
+    >
   </form>
 
   @if (loading()) {
@@ -40,9 +46,11 @@
     </div>
 
     <div class="app-market-page__pagination">
-      <app-button type="button" [disabled]="page() === 0" (pressed)="goToPage(page() - 1)">Précédent</app-button>
+      <app-button type="button" [bordered]="false" [disabled]="page() === 0" (pressed)="goToPage(page() - 1)"
+        >Précédent</app-button
+      >
       <span>Page {{ page() + 1 }} sur {{ totalPages() }}</span>
-      <app-button type="button" [disabled]="page() + 1 >= totalPages()" (pressed)="goToPage(page() + 1)">
+      <app-button type="button" [bordered]="false" [disabled]="page() + 1 >= totalPages()" (pressed)="goToPage(page() + 1)">
         Suivant
       </app-button>
     </div>

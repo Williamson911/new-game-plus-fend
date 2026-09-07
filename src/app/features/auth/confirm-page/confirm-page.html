@@ -4,8 +4,13 @@
       <p>Confirmation en cours...</p>
     }
     @case ('success') {
-      <p>Ton compte est confirmé, tu peux te connecter.</p>
-      <a routerLink="/auth/login">Se connecter</a>
+      <div class="app-auth-page__panel">
+        <p class="app-auth-page__panel-title">Compte confirmé !</p>
+        <p>Ton compte est activé, tu peux te connecter.</p>
+      </div>
+      <div class="app-auth-page__links">
+        <p><a routerLink="/auth/login">Se connecter</a></p>
+      </div>
     }
     @case ('error') {
       <p class="app-auth-page__error">Lien de confirmation invalide ou expiré.</p>

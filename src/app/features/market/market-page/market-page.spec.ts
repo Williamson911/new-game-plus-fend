@@ -58,7 +58,7 @@ describe('MarketPage', () => {
     expect(listingService.search).toHaveBeenCalledWith(
       { search: '', genreId: '', platform: '', minPrice: null, maxPrice: null },
       0,
-      12,
+      24,
     );
   });
 
@@ -89,7 +89,7 @@ describe('MarketPage', () => {
     expect(listingService.search).toHaveBeenCalledWith(
       { search: 'zelda', genreId: '', platform: '', minPrice: null, maxPrice: null },
       0,
-      12,
+      24,
     );
   });
 
@@ -102,7 +102,7 @@ describe('MarketPage', () => {
     expect(listingService.search).toHaveBeenCalledWith(
       { search: '', genreId: '', platform: '', minPrice: null, maxPrice: null },
       1,
-      12,
+      24,
     );
   });
 
@@ -118,7 +118,7 @@ describe('MarketPage', () => {
     expect(listingService.search).toHaveBeenCalledWith(
       { search: '', genreId: '', platform: '', minPrice: null, maxPrice: null },
       0,
-      12,
+      24,
     );
   });
 
