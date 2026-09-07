@@ -1,8 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 import { Navbar } from './navbar';
 import { AuthService } from '../../core/auth/auth.service';
+import { CartService } from '../../core/cart/cart.service';
 
 class AuthServiceStub {
   isAuthenticatedSignal = signal(false);
@@ -14,13 +16,24 @@ class AuthServiceStub {
   }
 }
 
+class CartServiceStub {
+  itemCount = signal(0);
+  getCart = vi.fn().mockReturnValue(of({ items: [] }));
+}
+
 describe('Navbar', () => {
   let authService: AuthServiceStub;
+  let cartService: CartServiceStub;
 
   beforeEach(() => {
     authService = new AuthServiceStub();
+    cartService = new CartServiceStub();
     TestBed.configureTestingModule({
-      providers: [provideRouter([]), { provide: AuthService, useValue: authService }],
+      providers: [
+        provideRouter([]),
+        { provide: AuthService, useValue: authService },
+        { provide: CartService, useValue: cartService },
+      ],
     });
   });
 
@@ -33,13 +46,26 @@ describe('Navbar', () => {
     expect(el.textContent).not.toContain('Déconnexion');
   });
 
-  it('shows a cart icon link when authenticated', () => {
+  it('shows a cart link with a "Panier" label when authenticated, and loads the cart', () => {
     authService.isAuthenticatedSignal.set(true);
     const fixture = TestBed.createComponent(Navbar);
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('a[aria-label="Panier"]')).not.toBeNull();
+    const cartLink = el.querySelector('a[aria-label="Panier"]');
+    expect(cartLink).not.toBeNull();
+    expect(cartLink?.textContent).toContain('Panier');
+    expect(cartService.getCart).toHaveBeenCalled();
+  });
+
+  it('shows the item count badge only when the cart has items', () => {
+    authService.isAuthenticatedSignal.set(true);
+    cartService.itemCount.set(3);
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('.app-navbar__cart-count')?.textContent).toContain('3');
   });
 
   it('shows a "Mon compte" trigger with an accessible menu when authenticated', () => {

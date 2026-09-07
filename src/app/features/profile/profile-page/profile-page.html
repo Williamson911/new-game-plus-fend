@@ -15,7 +15,7 @@
         <p class="app-profile-page__success">Profil mis à jour ✓</p>
       }
 
-      <app-button type="submit" [disabled]="updating()">Enregistrer</app-button>
+      <app-button type="submit" [disabled]="updating()" [bordered]="false">Enregistrer</app-button>
     </form>
 
     <section class="app-profile-page__danger-zone">
@@ -23,7 +23,13 @@
       @if (deleteError()) {
         <p class="app-profile-page__error">{{ deleteError() }}</p>
       }
-      <app-button type="button" variant="secondary" [disabled]="deletingAccount()" (pressed)="deleteAccount()">
+      <app-button
+        type="button"
+        variant="danger"
+        [bordered]="false"
+        [disabled]="deletingAccount()"
+        (pressed)="deleteAccount()"
+      >
         Supprimer mon compte
       </app-button>
     </section>

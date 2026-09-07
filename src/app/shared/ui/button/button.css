@@ -31,6 +31,10 @@
   background: var(--color-bg);
 }
 
+.app-button--danger {
+  background: var(--color-accent);
+}
+
 .app-button--no-border {
   border: none;
 }
