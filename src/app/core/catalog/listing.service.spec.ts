@@ -99,6 +99,8 @@ describe('ListingService', () => {
       price: 20,
       status: 'AVAILABLE',
       featured: true,
+      condition: 'GOOD',
+      description: null,
       imageUrls: [],
     });
   });
@@ -110,11 +112,11 @@ describe('ListingService', () => {
     req.flush({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 12 });
   });
 
-  it('create() calls POST /listings with gameId and price', () => {
-    service.create({ gameId: 'g1', price: 20 }).subscribe();
+  it('create() calls POST /listings with gameId, price, condition and description', () => {
+    service.create({ gameId: 'g1', price: 20, condition: 'GOOD', description: 'RAS' }).subscribe();
     const req = httpMock.expectOne(`${environment.apiUrl}/listings`);
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ gameId: 'g1', price: 20 });
+    expect(req.request.body).toEqual({ gameId: 'g1', price: 20, condition: 'GOOD', description: 'RAS' });
     req.flush({});
   });
 

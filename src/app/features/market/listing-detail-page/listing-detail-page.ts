@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
@@ -8,7 +8,7 @@ import { GameService } from '../../../core/catalog/game.service';
 import { CartService } from '../../../core/cart/cart.service';
 import { Badge } from '../../../shared/ui/badge/badge';
 import { Button } from '../../../shared/ui/button/button';
-import { GameResponse, ListingResponse } from '../../../core/catalog/catalog.types';
+import { GameResponse, LISTING_CONDITION_LABELS, ListingResponse } from '../../../core/catalog/catalog.types';
 
 @Component({
   selector: 'app-listing-detail-page',
@@ -31,6 +31,11 @@ export class ListingDetailPage implements OnInit {
   readonly addingToCart = signal(false);
   readonly addedToCart = signal(false);
   readonly cartError = signal<string | null>(null);
+
+  readonly conditionLabel = computed(() => {
+    const condition = this.listing()?.condition;
+    return condition ? LISTING_CONDITION_LABELS[condition] : 'Non renseigné';
+  });
 
   ngOnInit(): void {
     this.listingService

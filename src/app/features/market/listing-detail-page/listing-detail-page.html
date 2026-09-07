@@ -22,6 +22,8 @@
       <p>{{ game()!.description }}</p>
 
       <dl class="app-listing-detail__meta">
+        <dt>État</dt>
+        <dd>{{ conditionLabel() }}</dd>
         <dt>Genres</dt>
         <dd>{{ game()!.genres.join(', ') || 'Non renseigné' }}</dd>
         <dt>Éditeur</dt>
@@ -36,10 +38,17 @@
         <dd><a [routerLink]="['/shops', listing()!.shopId]">{{ listing()!.shopName }}</a></dd>
       </dl>
 
+      @if (listing()!.description) {
+        <div class="app-listing-detail__seller-note">
+          <h2>Description du vendeur</h2>
+          <p>{{ listing()!.description }}</p>
+        </div>
+      }
+
       @if (addedToCart()) {
         <p class="app-listing-detail__cart-confirm">Ajouté au panier ✓</p>
       } @else {
-        <app-button [disabled]="addingToCart()" (pressed)="addToCart()"
+        <app-button [disabled]="addingToCart()" [bordered]="false" (pressed)="addToCart()"
           >Ajouter au panier</app-button
         >
         @if (cartError()) {

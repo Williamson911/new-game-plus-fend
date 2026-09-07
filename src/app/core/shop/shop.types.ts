@@ -1,3 +1,5 @@
+import { ListingCondition } from '../catalog/catalog.types';
+
 export interface ShopResponse {
   id: string;
   name: string;
@@ -17,6 +19,8 @@ export interface ShopCreationResponse {
 export interface ListingCreateRequest {
   gameId: string;
   price: number;
+  condition: ListingCondition | null;
+  description: string | null;
 }
 
 export interface GameCreateRequest {

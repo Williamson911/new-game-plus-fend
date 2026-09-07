@@ -18,6 +18,47 @@
       <app-button type="submit" [disabled]="updating()" [bordered]="false">Enregistrer</app-button>
     </form>
 
+    @if (isSeller()) {
+      <section class="app-profile-page__wallet">
+        <h2>Mon porte-monnaie</h2>
+
+        @if (walletLoading()) {
+          <p>Chargement...</p>
+        } @else if (wallet()) {
+          <div class="app-profile-page__wallet-panel">
+            <p class="app-profile-page__wallet-balance">{{ wallet()!.balance | currency: 'EUR' }}</p>
+            <p class="app-profile-page__wallet-hint">
+              Solde disponible · commission de la plateforme : {{ wallet()!.commissionRate * 100 }} %
+            </p>
+
+            @if (payoutError()) {
+              <p class="app-profile-page__error">{{ payoutError() }}</p>
+            }
+
+            <app-button
+              type="button"
+              [bordered]="false"
+              [disabled]="payingOut() || wallet()!.balance <= 0"
+              (pressed)="requestPayout()"
+            >
+              Retirer {{ wallet()!.balance | currency: 'EUR' }}
+            </app-button>
+          </div>
+
+          @if (wallet()!.payouts.length > 0) {
+            <ul class="app-profile-page__payout-list">
+              @for (payout of wallet()!.payouts; track payout.id) {
+                <li>
+                  <span>{{ payout.createdAt | date: 'dd/MM/yyyy' }}</span>
+                  <span>{{ payout.amount | currency: 'EUR' }}</span>
+                </li>
+              }
+            </ul>
+          }
+        }
+      </section>
+    }
+
     <section class="app-profile-page__danger-zone">
       <h2>Supprimer mon compte</h2>
       @if (deleteError()) {

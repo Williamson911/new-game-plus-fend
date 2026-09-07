@@ -1,19 +1,23 @@
 import { Component, inject, signal } from '@angular/core';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
+import { WalletService } from '../../../core/shop/wallet.service';
+import { WalletResponse } from '../../../core/shop/wallet.types';
 import { TextField } from '../../../shared/ui/text-field/text-field';
 import { Button } from '../../../shared/ui/button/button';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ReactiveFormsModule, TextField, Button],
+  imports: [ReactiveFormsModule, TextField, Button, CurrencyPipe, DatePipe],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
 export class ProfilePage {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly walletService = inject(WalletService);
   private readonly router = inject(Router);
 
   readonly form = this.fb.nonNullable.group({
@@ -30,10 +34,54 @@ export class ProfilePage {
   readonly deletingAccount = signal(false);
   readonly deleteError = signal<string | null>(null);
 
+  readonly isSeller = signal(false);
+  readonly wallet = signal<WalletResponse | null>(null);
+  readonly walletLoading = signal(false);
+  readonly payingOut = signal(false);
+  readonly payoutError = signal<string | null>(null);
+
   constructor() {
     this.authService.refreshMe().subscribe((me) => {
       this.form.setValue({ username: me.username, email: me.email });
       this.loading.set(false);
+
+      if (this.authService.hasRole('SELLER')) {
+        this.isSeller.set(true);
+        this.loadWallet();
+      }
+    });
+  }
+
+  private loadWallet(): void {
+    this.walletLoading.set(true);
+    this.walletService.getWallet().subscribe({
+      next: (wallet) => {
+        this.wallet.set(wallet);
+        this.walletLoading.set(false);
+      },
+      error: () => {
+        this.walletLoading.set(false);
+      },
+    });
+  }
+
+  requestPayout(): void {
+    if (this.payingOut()) {
+      return;
+    }
+
+    this.payingOut.set(true);
+    this.payoutError.set(null);
+
+    this.walletService.requestPayout().subscribe({
+      next: (wallet) => {
+        this.wallet.set(wallet);
+        this.payingOut.set(false);
+      },
+      error: () => {
+        this.payingOut.set(false);
+        this.payoutError.set('Impossible de retirer le solde pour le moment.');
+      },
     });
   }
 

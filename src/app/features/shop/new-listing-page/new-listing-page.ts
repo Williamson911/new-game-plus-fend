@@ -6,12 +6,13 @@ import { GameService } from '../../../core/catalog/game.service';
 import { GenreService } from '../../../core/catalog/genre.service';
 import { ListingService } from '../../../core/catalog/listing.service';
 import { TextField } from '../../../shared/ui/text-field/text-field';
+import { SelectField } from '../../../shared/ui/select-field/select-field';
 import { Button } from '../../../shared/ui/button/button';
-import { GameResponse, GenreResponse } from '../../../core/catalog/catalog.types';
+import { GameResponse, GenreResponse, LISTING_CONDITION_LABELS, ListingCondition } from '../../../core/catalog/catalog.types';
 
 @Component({
   selector: 'app-new-listing-page',
-  imports: [ReactiveFormsModule, TextField, Button],
+  imports: [ReactiveFormsModule, TextField, SelectField, Button],
   templateUrl: './new-listing-page.html',
   styleUrl: './new-listing-page.css',
 })
@@ -43,7 +44,13 @@ export class NewListingPage {
 
   readonly priceForm = this.fb.nonNullable.group({
     price: [0, [Validators.required, Validators.min(0.01)]],
+    condition: ['GOOD' as ListingCondition, Validators.required],
+    description: [''],
   });
+
+  readonly conditionOptions = (Object.entries(LISTING_CONDITION_LABELS) as [ListingCondition, string][]).map(
+    ([value, label]) => ({ value, label }),
+  );
 
   readonly submitting = signal(false);
   readonly error = signal<string | null>(null);
@@ -104,7 +111,15 @@ export class NewListingPage {
     this.submitting.set(true);
     this.error.set(null);
 
-    this.listingService.create({ gameId: game.id, price: this.priceForm.getRawValue().price }).subscribe({
+    const values = this.priceForm.getRawValue();
+    this.listingService
+      .create({
+        gameId: game.id,
+        price: values.price,
+        condition: values.condition,
+        description: values.description || null,
+      })
+      .subscribe({
       next: () => {
         this.submitting.set(false);
         this.router.navigate(['/my-shop']);

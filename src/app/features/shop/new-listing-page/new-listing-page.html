@@ -65,6 +65,11 @@
       <label for="listing-price">Prix</label>
       <input id="listing-price" type="number" formControlName="price" />
 
+      <app-select-field label="État" [options]="conditionOptions" formControlName="condition" />
+
+      <label for="listing-description">Description (état détaillé, notice, boîte...)</label>
+      <textarea id="listing-description" formControlName="description" rows="4"></textarea>
+
       @if (error()) {
         <p class="app-new-listing-page__error">{{ error() }}</p>
       }

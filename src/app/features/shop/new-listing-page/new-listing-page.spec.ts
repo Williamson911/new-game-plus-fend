@@ -158,17 +158,22 @@ describe('NewListingPage', () => {
     listingService.create.mockReturnValue(of({}));
     const fixture = TestBed.createComponent(NewListingPage);
     fixture.componentInstance.selectGame({ id: 'g1', name: 'Zelda' } as GameResponse);
-    fixture.componentInstance.priceForm.setValue({ price: 20 });
+    fixture.componentInstance.priceForm.setValue({ price: 20, condition: 'GOOD', description: 'RAS' });
 
     fixture.componentInstance.createListing();
 
-    expect(listingService.create).toHaveBeenCalledWith({ gameId: 'g1', price: 20 });
+    expect(listingService.create).toHaveBeenCalledWith({
+      gameId: 'g1',
+      price: 20,
+      condition: 'GOOD',
+      description: 'RAS',
+    });
     expect(router.navigate).toHaveBeenCalledWith(['/my-shop']);
   });
 
   it('createListing() does nothing when no game is selected', () => {
     const fixture = TestBed.createComponent(NewListingPage);
-    fixture.componentInstance.priceForm.setValue({ price: 20 });
+    fixture.componentInstance.priceForm.setValue({ price: 20, condition: 'GOOD', description: 'RAS' });
 
     fixture.componentInstance.createListing();
 

@@ -19,6 +19,8 @@ function makeListing(overrides: Partial<ListingResponse> = {}): ListingResponse 
     price: 20,
     status: 'AVAILABLE',
     featured: false,
+    condition: 'GOOD',
+    description: null,
     imageUrls: [],
     ...overrides,
   };

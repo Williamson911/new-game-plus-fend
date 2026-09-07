@@ -6,6 +6,15 @@ export interface Page<T> {
   size: number;
 }
 
+export type ListingCondition = 'NEW' | 'VERY_GOOD' | 'GOOD' | 'FAIR';
+
+export const LISTING_CONDITION_LABELS: Record<ListingCondition, string> = {
+  NEW: 'Neuf',
+  VERY_GOOD: 'Très bon état',
+  GOOD: 'Bon état',
+  FAIR: 'État correct',
+};
+
 export interface ListingResponse {
   id: string;
   shopId: string;
@@ -16,6 +25,8 @@ export interface ListingResponse {
   price: number;
   status: 'AVAILABLE' | 'SOLD';
   featured: boolean;
+  condition: ListingCondition | null;
+  description: string | null;
   imageUrls: string[];
 }
 

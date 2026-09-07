@@ -5,6 +5,8 @@ import { of, throwError } from 'rxjs';
 import { ProfilePage } from './profile-page';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MeResponse } from '../../../core/auth/auth.types';
+import { WalletService } from '../../../core/shop/wallet.service';
+import { WalletResponse } from '../../../core/shop/wallet.types';
 
 function makeMe(overrides: Partial<MeResponse> = {}): MeResponse {
   return {
@@ -16,12 +18,28 @@ function makeMe(overrides: Partial<MeResponse> = {}): MeResponse {
   };
 }
 
+function makeWallet(overrides: Partial<WalletResponse> = {}): WalletResponse {
+  return {
+    balance: 0,
+    totalEarned: 0,
+    totalPaidOut: 0,
+    commissionRate: 0.1,
+    payouts: [],
+    ...overrides,
+  };
+}
+
 describe('ProfilePage', () => {
   let authService: {
     refreshMe: ReturnType<typeof vi.fn>;
     updateProfile: ReturnType<typeof vi.fn>;
     deleteAccount: ReturnType<typeof vi.fn>;
     logout: ReturnType<typeof vi.fn>;
+    hasRole: ReturnType<typeof vi.fn>;
+  };
+  let walletService: {
+    getWallet: ReturnType<typeof vi.fn>;
+    requestPayout: ReturnType<typeof vi.fn>;
   };
   let router: Router;
 
@@ -31,9 +49,17 @@ describe('ProfilePage', () => {
       updateProfile: vi.fn(),
       deleteAccount: vi.fn(),
       logout: vi.fn(),
+      hasRole: vi.fn().mockReturnValue(false),
+    };
+    walletService = {
+      getWallet: vi.fn().mockReturnValue(of(makeWallet())),
+      requestPayout: vi.fn().mockReturnValue(of(makeWallet())),
     };
     TestBed.configureTestingModule({
-      providers: [{ provide: AuthService, useValue: authService }],
+      providers: [
+        { provide: AuthService, useValue: authService },
+        { provide: WalletService, useValue: walletService },
+      ],
     });
     router = TestBed.inject(Router);
     vi.spyOn(router, 'navigate').mockResolvedValue(true);
@@ -107,5 +133,48 @@ describe('ProfilePage', () => {
 
     expect(fixture.componentInstance.deleteError()).not.toBeNull();
     expect(authService.logout).not.toHaveBeenCalled();
+  });
+
+  it('does not load the wallet for a non-seller', () => {
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.isSeller()).toBe(false);
+    expect(walletService.getWallet).not.toHaveBeenCalled();
+  });
+
+  it('loads the wallet for a seller', () => {
+    authService.hasRole.mockReturnValue(true);
+    walletService.getWallet.mockReturnValue(of(makeWallet({ balance: 42.5 })));
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.isSeller()).toBe(true);
+    expect(fixture.componentInstance.wallet()?.balance).toBe(42.5);
+  });
+
+  it('requestPayout() updates the wallet on success', () => {
+    authService.hasRole.mockReturnValue(true);
+    walletService.getWallet.mockReturnValue(of(makeWallet({ balance: 42.5 })));
+    walletService.requestPayout.mockReturnValue(of(makeWallet({ balance: 0, totalPaidOut: 42.5 })));
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.requestPayout();
+
+    expect(walletService.requestPayout).toHaveBeenCalled();
+    expect(fixture.componentInstance.wallet()?.balance).toBe(0);
+  });
+
+  it('requestPayout() shows an error on failure', () => {
+    authService.hasRole.mockReturnValue(true);
+    walletService.getWallet.mockReturnValue(of(makeWallet({ balance: 42.5 })));
+    walletService.requestPayout.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 409 })));
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.requestPayout();
+
+    expect(fixture.componentInstance.payoutError()).not.toBeNull();
   });
 });
