@@ -24,6 +24,7 @@
             [title]="listing.gameName"
             [price]="listing.price"
             [imageUrl]="listing.imageUrls[0] ?? null"
+            [platform]="listing.gamePlatform"
             [routerLink]="['/listings', listing.id]"
             [featured]="listing.featured"
             [sold]="listing.status === 'SOLD'"

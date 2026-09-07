@@ -7,13 +7,17 @@
     <app-select-field label="Plateforme" [options]="platformOptions()" formControlName="platform" />
 
     <div class="app-market-page__price-range">
-      <label for="market-min-price">Prix min</label>
-      <input id="market-min-price" type="number" formControlName="minPrice" />
-      <label for="market-max-price">Prix max</label>
-      <input id="market-max-price" type="number" formControlName="maxPrice" />
+      <div class="app-market-page__price-field">
+        <label for="market-min-price">Prix min</label>
+        <input id="market-min-price" type="number" formControlName="minPrice" />
+      </div>
+      <div class="app-market-page__price-field">
+        <label for="market-max-price">Prix max</label>
+        <input id="market-max-price" type="number" formControlName="maxPrice" />
+      </div>
     </div>
 
-    <app-button type="button" variant="secondary" (pressed)="reset()">Réinitialiser</app-button>
+    <app-button type="button" [bordered]="false" (pressed)="reset()">Réinitialiser</app-button>
   </form>
 
   @if (loading()) {
@@ -27,6 +31,7 @@
           [title]="listing.gameName"
           [price]="listing.price"
           [imageUrl]="listing.imageUrls[0] ?? null"
+          [platform]="listing.gamePlatform"
           [routerLink]="['/listings', listing.id]"
           [featured]="listing.featured"
           [sold]="listing.status === 'SOLD'"

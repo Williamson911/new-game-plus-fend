@@ -12,6 +12,7 @@ export class Button {
   readonly variant = input<ButtonVariant>('primary');
   readonly type = input<'button' | 'submit'>('button');
   readonly disabled = input<boolean>(false);
+  readonly bordered = input<boolean>(true);
   readonly pressed = output<void>();
 
   onClick(): void {

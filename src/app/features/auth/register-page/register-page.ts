@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { TextField } from '../../../shared/ui/text-field/text-field';
 import { Button } from '../../../shared/ui/button/button';
@@ -14,6 +14,7 @@ import { Button } from '../../../shared/ui/button/button';
 export class RegisterPage {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   readonly form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -47,6 +48,7 @@ export class RegisterPage {
       next: () => {
         this.submitting.set(false);
         this.registered.set(true);
+        setTimeout(() => this.router.navigate(['/auth/login']), 3000);
       },
       error: () => {
         this.submitting.set(false);

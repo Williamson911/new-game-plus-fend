@@ -5,6 +5,7 @@
     <p class="app-auth-page__success">
       Compte créé ! Vérifie tes emails pour confirmer ton adresse avant de te connecter.
     </p>
+    <p class="app-auth-page__redirect-hint">Redirection vers la connexion...</p>
   } @else {
     <form [formGroup]="form" (ngSubmit)="submit()">
       <app-text-field label="Nom d'utilisateur" formControlName="username" />
@@ -19,9 +20,11 @@
         <p class="app-auth-page__error">{{ serverError() }}</p>
       }
 
-      <app-button type="submit" [disabled]="submitting()">Créer mon compte</app-button>
+      <app-button type="submit" [disabled]="submitting()" [bordered]="false">Créer mon compte</app-button>
     </form>
 
-    <p>Déjà inscrit ? <a routerLink="/auth/login">Se connecter</a></p>
+    <div class="app-auth-page__links">
+      <p>Déjà inscrit ? <a routerLink="/auth/login">Se connecter</a></p>
+    </div>
   }
 </section>

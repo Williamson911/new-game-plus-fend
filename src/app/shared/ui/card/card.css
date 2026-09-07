@@ -3,11 +3,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  background: var(--color-surface);
-  border: 2px solid var(--color-navy);
-  border-radius: var(--radius);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
   padding: var(--space-3);
-  width: 180px;
+  width: 210px;
+  height: 400px;
 }
 
 .app-card__badge {
@@ -16,21 +16,45 @@
   right: var(--space-2);
 }
 
+.app-card__image-wrap {
+  position: relative;
+}
+
 .app-card__image {
   width: 100%;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  border: 1px solid var(--color-navy);
+  border-radius: calc(var(--radius-card) - var(--space-2));
+}
+
+.app-card__platform {
+  position: absolute;
+  top: var(--space-1);
+  left: var(--space-1);
+  background: var(--color-surface);
+  color: var(--color-navy);
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px var(--space-1);
+  border-radius: var(--radius-pill);
 }
 
 .app-card__title {
   font-size: 0.75rem;
+  line-height: 1.4;
   margin: 0;
+  height: 2.8em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .app-card__price {
   font-weight: 700;
   margin: 0;
+  margin-top: auto;
   border-top: 2px solid var(--color-orange);
   padding-top: var(--space-1);
 }
@@ -45,7 +69,12 @@
   font-size: 0.85rem;
   padding: var(--space-2);
   background: var(--color-accent);
-  color: var(--color-surface);
-  border: 2px solid var(--color-navy);
+  color: var(--color-navy);
   border-radius: var(--radius);
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.app-card__cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }

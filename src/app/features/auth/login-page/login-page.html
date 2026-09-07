@@ -9,11 +9,11 @@
       <p class="app-auth-page__error">{{ serverError() }}</p>
     }
 
-    <app-button type="submit" [disabled]="submitting()">Se connecter</app-button>
+    <app-button type="submit" [disabled]="submitting()" [bordered]="false">Se connecter</app-button>
   </form>
 
-  <p>
-    Pas encore de compte ? <a routerLink="/auth/register">S'inscrire</a><br />
-    <a routerLink="/auth/forgot-password">Mot de passe oublié ?</a>
-  </p>
+  <div class="app-auth-page__links">
+    <p>Pas encore de compte ? <a routerLink="/auth/register">S'inscrire</a></p>
+    <a class="app-auth-page__forgot" routerLink="/auth/forgot-password">Mot de passe oublié ?</a>
+  </div>
 </section>

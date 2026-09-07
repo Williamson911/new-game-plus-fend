@@ -11,3 +11,36 @@
 .app-auth-page__success {
   font-weight: 700;
 }
+
+.app-auth-page__redirect-hint {
+  color: var(--color-navy);
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
+.app-auth-page__links {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.app-auth-page__links p {
+  margin: 0;
+}
+
+.app-auth-page__links a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.app-auth-page__links a:hover {
+  border-color: var(--color-accent);
+}

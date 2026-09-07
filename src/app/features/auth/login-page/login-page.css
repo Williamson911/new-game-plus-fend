@@ -7,3 +7,41 @@
   color: var(--color-accent);
   font-weight: 700;
 }
+
+.app-auth-page__links {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 2px solid var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.app-auth-page__links p {
+  margin: 0;
+}
+
+.app-auth-page__links a {
+  color: var(--color-accent);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.app-auth-page__links a:hover {
+  border-color: var(--color-accent);
+}
+
+.app-auth-page__forgot {
+  font-size: 0.8rem;
+  color: var(--color-navy);
+  opacity: 0.65;
+}
+
+.app-auth-page__forgot:hover {
+  opacity: 1;
+  border-color: var(--color-navy);
+}

@@ -13,6 +13,7 @@ export class Card {
   readonly title = input.required<string>();
   readonly price = input.required<number>();
   readonly imageUrl = input<string | null>(null);
+  readonly platform = input<string | null>(null);
   readonly routerLink = input.required<string | unknown[]>();
   readonly featured = input<boolean>(false);
   readonly sold = input<boolean>(false);

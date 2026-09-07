@@ -14,9 +14,9 @@
   font-family: var(--font-body);
   font-size: 1rem;
   padding: var(--space-2);
-  border: 2px solid var(--color-navy);
-  border-radius: var(--radius);
-  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-card);
   color: var(--color-navy);
 }
 

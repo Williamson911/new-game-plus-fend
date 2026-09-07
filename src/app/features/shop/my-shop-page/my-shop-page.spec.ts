@@ -15,6 +15,7 @@ function makeListing(overrides: Partial<ListingResponse> = {}): ListingResponse 
     gameId: 'g1',
     gameName: 'Kingdom Hearts',
     shopName: 'Retro Shop',
+    gamePlatform: 'PlayStation 2',
     price: 20,
     status: 'AVAILABLE',
     featured: false,

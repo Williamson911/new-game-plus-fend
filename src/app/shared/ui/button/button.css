@@ -7,8 +7,14 @@
   border: 2px solid var(--color-navy);
   border-radius: var(--radius);
   background: var(--color-accent);
-  color: var(--color-surface);
+  color: var(--color-navy);
   cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease, background-color 0.15s ease;
+}
+
+.app-button:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
 .app-button:disabled {
@@ -19,4 +25,12 @@
 .app-button--secondary {
   background: var(--color-surface);
   color: var(--color-navy);
+}
+
+.app-button--secondary:hover:not(:disabled) {
+  background: var(--color-bg);
+}
+
+.app-button--no-border {
+  border: none;
 }

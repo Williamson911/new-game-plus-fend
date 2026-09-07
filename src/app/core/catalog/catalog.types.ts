@@ -12,6 +12,7 @@ export interface ListingResponse {
   gameId: string;
   gameName: string;
   shopName: string;
+  gamePlatform: string;
   price: number;
   status: 'AVAILABLE' | 'SOLD';
   featured: boolean;
