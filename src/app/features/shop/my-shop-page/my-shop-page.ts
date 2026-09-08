@@ -9,10 +9,11 @@ import { Button } from '../../../shared/ui/button/button';
 import { Badge } from '../../../shared/ui/badge/badge';
 import { ShopResponse } from '../../../core/shop/shop.types';
 import { ListingResponse } from '../../../core/catalog/catalog.types';
+import { MyShopOrdersPage } from '../my-shop-orders-page/my-shop-orders-page';
 
 @Component({
   selector: 'app-my-shop-page',
-  imports: [ReactiveFormsModule, RouterLink, TextField, Button, Badge],
+  imports: [ReactiveFormsModule, RouterLink, TextField, Button, Badge, MyShopOrdersPage],
   templateUrl: './my-shop-page.html',
   styleUrl: './my-shop-page.css',
 })

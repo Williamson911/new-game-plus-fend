@@ -6,9 +6,11 @@
   <ul class="app-my-shop-orders-page__list">
     @for (order of orders(); track order.id) {
       <li class="app-my-shop-orders-page__order">
-        <p>{{ order.buyerUsername }} ({{ order.buyerEmail }})</p>
-        <p>Statut : {{ order.status }}</p>
-        <ul>
+        <div class="app-my-shop-orders-page__order-header">
+          <p class="app-my-shop-orders-page__buyer">{{ order.buyerUsername }} ({{ order.buyerEmail }})</p>
+          <span class="app-my-shop-orders-page__status">{{ order.status }}</span>
+        </div>
+        <ul class="app-my-shop-orders-page__items">
           @for (item of order.items; track item.listingId) {
             <li>{{ item.gameName }} — {{ item.price }} €</li>
           }
@@ -28,7 +30,7 @@
             {{ order.relayPoint.relayCountry }}
           </p>
         }
-        <p>Total : {{ orderTotal(order) }} €</p>
+        <p class="app-my-shop-orders-page__total">Total : {{ orderTotal(order) }} €</p>
 
         @if (nextStatusesFor(order).length > 0) {
           <div class="app-my-shop-orders-page__actions">

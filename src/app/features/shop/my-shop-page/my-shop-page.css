@@ -1,5 +1,22 @@
 .app-my-shop-page {
-  max-width: 720px;
+  max-width: 1100px;
+}
+
+.app-my-shop-page__columns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.app-my-shop-page__column {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.app-my-shop-page__column h2 {
+  margin: 0 0 var(--space-3);
 }
 
 .app-my-shop-page__listings {
