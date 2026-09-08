@@ -29,8 +29,8 @@ describe('CheckoutPage', () => {
       getCart: vi.fn().mockReturnValue(
         of({
           items: [
-            { listingId: 'l1', gameName: 'A', shopName: 'Shop A', price: 20, weightGrams: 300 },
-            { listingId: 'l2', gameName: 'B', shopName: 'Shop B', price: 15, weightGrams: 500 },
+            { listingId: 'l1', gameName: 'A', shopName: 'Shop A', price: 20, weightGrams: 300, imageUrl: '' },
+            { listingId: 'l2', gameName: 'B', shopName: 'Shop B', price: 15, weightGrams: 500, imageUrl: '' },
           ],
         }),
       ),

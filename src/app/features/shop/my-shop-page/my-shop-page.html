@@ -31,7 +31,12 @@
       <ul class="app-my-shop-page__listings">
         @for (listing of listings(); track listing.id) {
           <li class="app-my-shop-page__listing">
-            <span>{{ listing.gameName }}</span>
+            <img
+              class="app-my-shop-page__listing-image"
+              [src]="listing.imageUrls[0] ?? 'images/plusicon.svg'"
+              [alt]="listing.gameName"
+            />
+            <span class="app-my-shop-page__listing-name">{{ listing.gameName }}</span>
             <app-badge
               [variant]="listing.status === 'SOLD' ? 'sold' : 'featured'"
               [label]="listing.status === 'SOLD' ? 'Vendu' : 'Disponible'"
@@ -41,18 +46,18 @@
               <form [formGroup]="editPriceForm" (ngSubmit)="saveEditPrice(listing)">
                 <input type="number" formControlName="price" />
                 <app-button type="submit">Enregistrer</app-button>
-                <app-button type="button" variant="secondary" (pressed)="cancelEditPrice()">Annuler</app-button>
+                <app-button type="button" variant="ghost" (pressed)="cancelEditPrice()">Annuler</app-button>
               </form>
             } @else {
-              <span>{{ listing.price }} €</span>
-              <app-button type="button" variant="secondary" (pressed)="startEditPrice(listing)">
+              <span class="app-my-shop-page__listing-price">{{ listing.price }} €</span>
+              <app-button type="button" variant="ghost" (pressed)="startEditPrice(listing)">
                 Modifier le prix
               </app-button>
             }
 
             <app-button
               type="button"
-              variant="secondary"
+              variant="danger"
               [disabled]="listing.status === 'SOLD'"
               (pressed)="deleteListing(listing)"
             >
@@ -63,7 +68,7 @@
       </ul>
     }
 
-    <app-button type="button" variant="secondary" [disabled]="deletingShop()" (pressed)="deleteShop()">
+    <app-button type="button" variant="danger" [disabled]="deletingShop()" (pressed)="deleteShop()">
       Supprimer ma boutique
     </app-button>
   </section>

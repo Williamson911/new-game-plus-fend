@@ -43,6 +43,15 @@ export interface GameResponse {
   weightGrams: number;
 }
 
+export interface IgdbGameResult {
+  igdbId: string;
+  name: string;
+  description: string | null;
+  coverURL: string | null;
+  platform: string | null;
+  releaseDate: string | null;
+}
+
 export interface GenreResponse {
   id: string;
   name: string;

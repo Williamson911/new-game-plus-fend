@@ -96,6 +96,19 @@ export const routes: Routes = [
     canActivate: [authGuard, roleGuard('ADMIN')],
   },
   {
+    path: 'cgv',
+    loadComponent: () => import('./features/legal/cgv-page/cgv-page').then((m) => m.CgvPage),
+  },
+  {
+    path: 'mentions-legales',
+    loadComponent: () =>
+      import('./features/legal/mentions-legales-page/mentions-legales-page').then((m) => m.MentionsLegalesPage),
+  },
+  {
+    path: 'confidentialite',
+    loadComponent: () => import('./features/legal/privacy-page/privacy-page').then((m) => m.PrivacyPage),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

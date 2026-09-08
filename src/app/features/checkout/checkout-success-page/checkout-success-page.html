@@ -1,9 +1,13 @@
 <section class="app-checkout-success-page">
-  <h1>Merci pour ta commande !</h1>
-  <p>
-    Ton paiement a été pris en compte. Tu recevras une confirmation dès que ta
-    commande sera validée.
-  </p>
-  <a routerLink="/orders">Voir mes commandes</a>
-  <a routerLink="/market">Continuer mes achats</a>
+  <div class="app-checkout-success-page__panel">
+    <h1>Merci pour ta commande !</h1>
+    <p>
+      Ton paiement a été pris en compte. Tu recevras une confirmation dès que ta
+      commande sera validée.
+    </p>
+  </div>
+  <div class="app-checkout-success-page__actions">
+    <a routerLink="/orders"><app-button type="button">Voir mes commandes</app-button></a>
+    <a routerLink="/market"><app-button type="button" variant="ghost">Continuer mes achats</app-button></a>
+  </div>
 </section>

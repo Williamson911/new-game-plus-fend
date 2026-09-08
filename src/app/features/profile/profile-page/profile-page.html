@@ -18,6 +18,23 @@
       <app-button type="submit" [disabled]="updating()" [bordered]="false">Enregistrer</app-button>
     </form>
 
+    <section class="app-profile-page__password">
+      <h2>Changer le mot de passe</h2>
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+        <app-text-field label="Mot de passe actuel" type="password" formControlName="currentPassword" />
+        <app-text-field label="Nouveau mot de passe" type="password" formControlName="newPassword" />
+
+        @if (passwordError()) {
+          <p class="app-profile-page__error">{{ passwordError() }}</p>
+        }
+        @if (passwordSuccess()) {
+          <p class="app-profile-page__success">Mot de passe modifié ✓</p>
+        }
+
+        <app-button type="submit" [disabled]="changingPassword()" [bordered]="false">Enregistrer</app-button>
+      </form>
+    </section>
+
     @if (isSeller()) {
       <section class="app-profile-page__wallet">
         <h2>Mon porte-monnaie</h2>

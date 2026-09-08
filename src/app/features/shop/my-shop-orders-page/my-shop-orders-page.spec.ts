@@ -16,7 +16,7 @@ function makeOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
     relayPoint: null,
     shippingCost: 5,
     createdAt: '2026-01-01T00:00:00',
-    items: [{ listingId: 'l1', gameName: 'Kingdom Hearts', price: 20 }],
+    items: [{ listingId: 'l1', gameName: 'Kingdom Hearts', price: 20, imageUrl: '' }],
     reviewed: false,
     ...overrides,
   };
@@ -65,8 +65,8 @@ describe('MyShopOrdersPage', () => {
     const total = fixture.componentInstance.orderTotal(
       makeOrder({
         items: [
-          { listingId: 'l1', gameName: 'A', price: 20 },
-          { listingId: 'l2', gameName: 'B', price: 10 },
+          { listingId: 'l1', gameName: 'A', price: 20, imageUrl: '' },
+          { listingId: 'l2', gameName: 'B', price: 10, imageUrl: '' },
         ],
         shippingCost: 5,
       }),

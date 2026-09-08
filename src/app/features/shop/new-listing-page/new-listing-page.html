@@ -12,18 +12,50 @@
       @if (searchResults().length > 0) {
         <ul class="app-new-listing-page__results">
           @for (game of searchResults(); track game.id) {
-            <li>
-              {{ game.name }} ({{ game.platform }})
+            <li class="app-new-listing-page__result">
+              <img
+                class="app-new-listing-page__result-image"
+                [src]="game.coverURL ?? 'images/plusicon.svg'"
+                [alt]="game.name"
+              />
+              <span class="app-new-listing-page__result-name">
+                {{ game.name }}
+                <span class="app-new-listing-page__result-platform">({{ game.platform }})</span>
+              </span>
               <app-button type="button" (pressed)="selectGame(game)">Choisir</app-button>
+            </li>
+          }
+        </ul>
+      }
+
+      @if (igdbResults().length > 0) {
+        <p class="app-new-listing-page__igdb-label">Trouvé sur IGDB, pas encore dans le catalogue :</p>
+        <ul class="app-new-listing-page__results">
+          @for (result of igdbResults(); track result.igdbId) {
+            <li class="app-new-listing-page__result">
+              <img
+                class="app-new-listing-page__result-image"
+                [src]="result.coverURL ?? 'images/plusicon.svg'"
+                [alt]="result.name"
+              />
+              <span class="app-new-listing-page__result-name">
+                {{ result.name }}
+                @if (result.platform) {
+                  <span class="app-new-listing-page__result-platform">({{ result.platform }})</span>
+                }
+              </span>
+              <app-button type="button" (pressed)="selectIgdbGame(result)">Importer</app-button>
             </li>
           }
         </ul>
       }
     </div>
 
-    <app-button type="button" variant="secondary" (pressed)="showCreateGameForm.set(!showCreateGameForm())">
-      Créer un nouveau jeu
-    </app-button>
+    <div class="app-new-listing-page__new-game-toggle">
+      <app-button type="button" (pressed)="toggleCreateGameForm()">
+        Créer un nouveau jeu
+      </app-button>
+    </div>
 
     @if (showCreateGameForm()) {
       <form [formGroup]="newGameForm" (ngSubmit)="createGame()" class="app-new-listing-page__game-form">
@@ -33,15 +65,19 @@
         <app-text-field label="Développeur" formControlName="developer" />
         <app-text-field label="Plateforme" formControlName="platform" />
 
-        <label for="release-date">Date de sortie</label>
-        <input id="release-date" type="date" formControlName="releaseDate" />
+        <div class="app-new-listing-page__field">
+          <label for="release-date">Date de sortie</label>
+          <input id="release-date" type="date" formControlName="releaseDate" />
+        </div>
 
         <app-text-field label="URL de la jaquette (optionnel)" formControlName="coverURL" />
 
-        <label for="weight-grams">Poids (grammes)</label>
-        <input id="weight-grams" type="number" formControlName="weightGrams" />
+        <div class="app-new-listing-page__field">
+          <label for="weight-grams">Poids (grammes)</label>
+          <input id="weight-grams" type="number" formControlName="weightGrams" />
+        </div>
 
-        <fieldset>
+        <fieldset class="app-new-listing-page__genres">
           <legend>Genres</legend>
           @for (genre of genres(); track genre.id) {
             <label>
@@ -59,22 +95,36 @@
       </form>
     }
   } @else {
-    <p>Jeu sélectionné : {{ selectedGame()!.name }}</p>
+    <div class="app-new-listing-page__selected-game">
+      <img
+        class="app-new-listing-page__selected-game-image"
+        [src]="selectedGame()!.coverURL ?? 'images/plusicon.svg'"
+        [alt]="selectedGame()!.name"
+      />
+      <p>Jeu sélectionné : <strong>{{ selectedGame()!.name }}</strong></p>
+    </div>
 
-    <form [formGroup]="priceForm" (ngSubmit)="createListing()">
-      <label for="listing-price">Prix</label>
-      <input id="listing-price" type="number" formControlName="price" />
+    <form [formGroup]="priceForm" (ngSubmit)="createListing()" class="app-new-listing-page__price-form">
+      <div class="app-new-listing-page__field">
+        <label for="listing-price">Prix</label>
+        <input id="listing-price" type="number" formControlName="price" />
+      </div>
 
       <app-select-field label="État" [options]="conditionOptions" formControlName="condition" />
 
-      <label for="listing-description">Description (état détaillé, notice, boîte...)</label>
-      <textarea id="listing-description" formControlName="description" rows="4"></textarea>
+      <div class="app-new-listing-page__field">
+        <label for="listing-description">Description (état détaillé, notice, boîte...)</label>
+        <textarea id="listing-description" formControlName="description" rows="4"></textarea>
+      </div>
 
       @if (error()) {
         <p class="app-new-listing-page__error">{{ error() }}</p>
       }
 
-      <app-button type="submit" [disabled]="submitting()">Créer l'annonce</app-button>
+      <div class="app-new-listing-page__actions">
+        <app-button type="submit" [disabled]="submitting()">Créer l'annonce</app-button>
+        <app-button type="button" variant="ghost" [disabled]="submitting()" (pressed)="cancel()">Annuler</app-button>
+      </div>
     </form>
   }
 </section>

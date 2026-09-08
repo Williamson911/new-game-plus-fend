@@ -14,6 +14,7 @@
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
+  z-index: 1;
 }
 
 .app-card__image-wrap {

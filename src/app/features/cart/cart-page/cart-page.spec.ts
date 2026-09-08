@@ -13,6 +13,7 @@ function makeItem(overrides: Partial<CartItemResponse> = {}): CartItemResponse {
     shopName: 'Retro Shop',
     price: 20,
     weightGrams: 300,
+    imageUrl: 'https://example.com/cover.jpg',
     ...overrides,
   };
 }

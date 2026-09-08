@@ -1,3 +1,7 @@
+.app-my-shop-page {
+  max-width: 720px;
+}
+
 .app-my-shop-page__listings {
   list-style: none;
   padding: 0;
@@ -11,7 +15,26 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3);
-  border: 2px solid var(--color-navy);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 28px -18px rgba(26, 20, 34, 0.4);
+}
+
+.app-my-shop-page__listing-image {
+  width: 44px;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: var(--color-bg);
+  border-radius: calc(var(--radius-card) - 4px);
+  flex-shrink: 0;
+}
+
+.app-my-shop-page__listing-name {
+  flex: 1;
+}
+
+.app-my-shop-page__listing-price {
+  white-space: nowrap;
 }
 
 .app-my-shop-page__error {

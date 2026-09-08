@@ -5,10 +5,14 @@ import { NewListingPage } from './new-listing-page';
 import { GameService } from '../../../core/catalog/game.service';
 import { GenreService } from '../../../core/catalog/genre.service';
 import { ListingService } from '../../../core/catalog/listing.service';
-import { GameResponse } from '../../../core/catalog/catalog.types';
+import { GameResponse, IgdbGameResult } from '../../../core/catalog/catalog.types';
 
 describe('NewListingPage', () => {
-  let gameService: { search: ReturnType<typeof vi.fn>; create: ReturnType<typeof vi.fn> };
+  let gameService: {
+    search: ReturnType<typeof vi.fn>;
+    searchIgdb: ReturnType<typeof vi.fn>;
+    create: ReturnType<typeof vi.fn>;
+  };
   let genreService: { getAll: ReturnType<typeof vi.fn> };
   let listingService: { create: ReturnType<typeof vi.fn> };
   let router: Router;
@@ -16,6 +20,7 @@ describe('NewListingPage', () => {
   beforeEach(() => {
     gameService = {
       search: vi.fn().mockReturnValue(of({ content: [], totalElements: 0, totalPages: 0, number: 0, size: 10 })),
+      searchIgdb: vi.fn().mockReturnValue(of([])),
       create: vi.fn(),
     };
     genreService = { getAll: vi.fn().mockReturnValue(of([{ id: 'g-rpg', name: 'RPG' }])) };
@@ -82,6 +87,86 @@ describe('NewListingPage', () => {
       expect(gameService.search).toHaveBeenCalledWith('zelda', 0);
       expect(fixture.componentInstance.searchResults().length).toBe(1);
     });
+  });
+
+  it('search() also calls GameService.searchIgdb and populates igdbResults', () => {
+    const igdbResult: IgdbGameResult = {
+      igdbId: 'i1',
+      name: 'Zelda',
+      description: 'desc',
+      coverURL: null,
+      platform: 'NES',
+      releaseDate: '1986-02-21',
+    };
+    gameService.searchIgdb.mockReturnValue(of([igdbResult]));
+    const fixture = TestBed.createComponent(NewListingPage);
+
+    fixture.componentInstance.search('zelda');
+
+    expect(gameService.searchIgdb).toHaveBeenCalledWith('zelda');
+    expect(fixture.componentInstance.igdbResults()).toEqual([igdbResult]);
+  });
+
+  it('selectIgdbGame() prefills the new-game form and opens it', () => {
+    const fixture = TestBed.createComponent(NewListingPage);
+
+    fixture.componentInstance.selectIgdbGame({
+      igdbId: 'i1',
+      name: 'Zelda',
+      description: 'desc',
+      coverURL: 'https://example.com/cover.jpg',
+      platform: 'NES',
+      releaseDate: '1986-02-21',
+    });
+
+    expect(fixture.componentInstance.pendingIgdbId()).toBe('i1');
+    expect(fixture.componentInstance.showCreateGameForm()).toBe(true);
+    expect(fixture.componentInstance.newGameForm.getRawValue()).toMatchObject({
+      name: 'Zelda',
+      description: 'desc',
+      platform: 'NES',
+      releaseDate: '1986-02-21',
+      coverURL: 'https://example.com/cover.jpg',
+    });
+  });
+
+  it('toggleCreateGameForm() clears any pending IGDB import before opening a blank form', () => {
+    const fixture = TestBed.createComponent(NewListingPage);
+    fixture.componentInstance.selectIgdbGame({
+      igdbId: 'i1',
+      name: 'Zelda',
+      description: 'desc',
+      coverURL: null,
+      platform: 'NES',
+      releaseDate: '1986-02-21',
+    });
+    fixture.componentInstance.toggleCreateGameForm();
+
+    expect(fixture.componentInstance.showCreateGameForm()).toBe(false);
+
+    fixture.componentInstance.toggleCreateGameForm();
+
+    expect(fixture.componentInstance.pendingIgdbId()).toBeNull();
+    expect(fixture.componentInstance.newGameForm.getRawValue().name).toBe('');
+  });
+
+  it('createGame() sends the pending IGDB id when the game was imported from IGDB', () => {
+    gameService.create.mockReturnValue(of({ id: 'g-new', name: 'Zelda' }));
+    const fixture = TestBed.createComponent(NewListingPage);
+    fixture.componentInstance.toggleGenre('g-rpg');
+    fixture.componentInstance.selectIgdbGame({
+      igdbId: 'i1',
+      name: 'Zelda',
+      description: 'desc',
+      coverURL: null,
+      platform: 'NES',
+      releaseDate: '1986-02-21',
+    });
+    fixture.componentInstance.newGameForm.patchValue({ publisher: 'Nintendo', developer: 'Nintendo' });
+
+    fixture.componentInstance.createGame();
+
+    expect(gameService.create).toHaveBeenCalledWith(expect.objectContaining({ igdbID: 'i1' }));
   });
 
   it('selectGame() sets the selected game and hides the create-game form', () => {

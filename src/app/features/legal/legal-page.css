@@ -1,0 +1,46 @@
+.app-legal-page {
+  max-width: 720px;
+}
+
+.app-legal-page__updated {
+  opacity: 0.6;
+  font-size: 0.85rem;
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-4);
+}
+
+.app-legal-page__notice {
+  background: var(--color-navy);
+  color: var(--color-surface);
+  border-radius: var(--radius-card);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: 0.9rem;
+}
+
+.app-legal-page__notice p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+.app-legal-page section {
+  margin-bottom: var(--space-4);
+}
+
+.app-legal-page h2 {
+  font-size: 1.1rem;
+}
+
+.app-legal-page p,
+.app-legal-page li {
+  line-height: 1.6;
+}
+
+.app-legal-page ul {
+  padding-left: var(--space-4);
+}
+
+.app-legal-page a {
+  color: var(--color-accent);
+  font-weight: 700;
+}

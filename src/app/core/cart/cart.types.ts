@@ -6,6 +6,7 @@ export interface CartItemResponse {
   shopName: string;
   price: number;
   weightGrams: number;
+  imageUrl: string;
 }
 
 export interface CartResponse {

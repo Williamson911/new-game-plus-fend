@@ -20,10 +20,23 @@
   margin-bottom: var(--space-4);
 }
 
+.app-checkout-page__divider {
+  border: none;
+  border-top: 2px solid var(--color-orange);
+  margin: 0 0 var(--space-4);
+}
+
 .app-checkout-page__summary {
-  border: 2px solid var(--color-navy);
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 28px -18px rgba(26, 20, 34, 0.4);
   padding: var(--space-3);
   margin-bottom: var(--space-4);
+}
+
+.app-checkout-page__summary h2 {
+  font-size: 1rem;
+  margin: 0 0 var(--space-2);
 }
 
 .app-checkout-page__error {

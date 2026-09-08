@@ -4,7 +4,7 @@
   text-transform: uppercase;
   font-size: 0.85rem;
   padding: var(--space-2) var(--space-4);
-  border: 2px solid var(--color-navy);
+  border: none;
   border-radius: var(--radius);
   background: var(--color-orange);
   color: var(--color-navy);
@@ -33,6 +33,17 @@
 
 .app-button--danger {
   background: var(--color-accent);
+}
+
+.app-button--ghost {
+  background: none;
+  color: var(--color-accent);
+  padding: var(--space-1) var(--space-2);
+}
+
+.app-button--ghost:hover:not(:disabled) {
+  filter: none;
+  text-decoration: underline;
 }
 
 .app-button--no-border {

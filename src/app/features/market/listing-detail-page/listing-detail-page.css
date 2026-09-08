@@ -7,8 +7,8 @@
 .app-listing-detail__image {
   width: 240px;
   aspect-ratio: 3 / 4;
-  object-fit: cover;
-  border: 2px solid var(--color-navy);
+  object-fit: contain;
+  border-radius: var(--radius-card);
 }
 
 .app-listing-detail__info {
@@ -19,6 +19,34 @@
 .app-listing-detail__price {
   font-weight: 700;
   font-size: 1.25rem;
+}
+
+.app-listing-detail__shop {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  margin: var(--space-2) 0 var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-navy);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.app-listing-detail__shop:hover {
+  filter: brightness(1.15);
+  transform: translateY(-1px);
+}
+
+.app-listing-detail__shop-label {
+  color: var(--color-surface);
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.app-listing-detail__shop-name {
+  color: var(--color-orange);
+  font-weight: 700;
 }
 
 .app-listing-detail__meta {
@@ -37,20 +65,23 @@
 }
 
 .app-listing-detail__seller-note {
-  background: var(--color-card);
-  border-top: 4px solid var(--color-orange);
+  background: var(--color-navy);
+  color: var(--color-surface);
   border-radius: var(--radius-card);
-  padding: var(--space-3);
+  padding: var(--space-4);
   margin-bottom: var(--space-4);
+  box-shadow: 0 20px 40px -22px rgba(26, 20, 34, 0.6);
 }
 
 .app-listing-detail__seller-note h2 {
+  color: var(--color-orange);
   font-size: 1rem;
   margin: 0 0 var(--space-1);
 }
 
 .app-listing-detail__seller-note p {
   margin: 0;
+  opacity: 0.85;
 }
 
 .app-listing-detail__error {

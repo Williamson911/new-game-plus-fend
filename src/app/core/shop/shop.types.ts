@@ -59,6 +59,7 @@ export interface OrderItemResponse {
   listingId: string;
   gameName: string;
   price: number;
+  imageUrl: string;
 }
 
 export interface OrderResponse {

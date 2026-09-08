@@ -1,6 +1,30 @@
 .app-checkout-success-page {
+  max-width: 420px;
+  margin: var(--space-5) auto 0;
+  text-align: center;
+}
+
+.app-checkout-success-page__panel {
+  background: var(--color-navy);
+  color: var(--color-surface);
+  border-radius: var(--radius-card);
+  padding: var(--space-5) var(--space-4);
+  margin-bottom: var(--space-4);
+  box-shadow: 0 20px 40px -22px rgba(26, 20, 34, 0.6);
+}
+
+.app-checkout-success-page__panel h1 {
+  color: var(--color-orange);
+}
+
+.app-checkout-success-page__panel p {
+  margin: 0;
+  opacity: 0.85;
+}
+
+.app-checkout-success-page__actions {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  align-items: flex-start;
+  align-items: center;
+  gap: var(--space-2);
 }

@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
@@ -30,6 +31,15 @@ export class ProfilePage {
   readonly updating = signal(false);
   readonly updateSuccess = signal(false);
   readonly updateError = signal<string | null>(null);
+
+  readonly passwordForm = this.fb.nonNullable.group({
+    currentPassword: ['', Validators.required],
+    newPassword: ['', [Validators.required, Validators.minLength(8)]],
+  });
+
+  readonly changingPassword = signal(false);
+  readonly passwordSuccess = signal(false);
+  readonly passwordError = signal<string | null>(null);
 
   readonly deletingAccount = signal(false);
   readonly deleteError = signal<string | null>(null);
@@ -102,6 +112,32 @@ export class ProfilePage {
       error: () => {
         this.updating.set(false);
         this.updateError.set("Nom d'utilisateur ou email déjà utilisé.");
+      },
+    });
+  }
+
+  changePassword(): void {
+    if (this.passwordForm.invalid || this.changingPassword()) {
+      return;
+    }
+
+    this.changingPassword.set(true);
+    this.passwordSuccess.set(false);
+    this.passwordError.set(null);
+
+    this.authService.changePassword(this.passwordForm.getRawValue()).subscribe({
+      next: () => {
+        this.changingPassword.set(false);
+        this.passwordSuccess.set(true);
+        this.passwordForm.reset();
+      },
+      error: (err: unknown) => {
+        this.changingPassword.set(false);
+        this.passwordError.set(
+          err instanceof HttpErrorResponse && err.status === 401
+            ? 'Mot de passe actuel incorrect.'
+            : 'Impossible de changer le mot de passe.',
+        );
       },
     });
   }

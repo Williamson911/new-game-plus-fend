@@ -19,6 +19,12 @@
 
       <h1>{{ game()!.name }}</h1>
       <p class="app-listing-detail__price">{{ listing()!.price | currency: 'EUR' }}</p>
+
+      <a class="app-listing-detail__shop" [routerLink]="['/shops', listing()!.shopId]">
+        <span class="app-listing-detail__shop-label">Vendu par</span>
+        <span class="app-listing-detail__shop-name">{{ listing()!.shopName }}</span>
+      </a>
+
       <p>{{ game()!.description }}</p>
 
       <dl class="app-listing-detail__meta">
@@ -34,8 +40,6 @@
         <dd>{{ game()!.platform }}</dd>
         <dt>Date de sortie</dt>
         <dd>{{ game()!.releaseDate }}</dd>
-        <dt>Boutique</dt>
-        <dd><a [routerLink]="['/shops', listing()!.shopId]">{{ listing()!.shopName }}</a></dd>
       </dl>
 
       @if (listing()!.description) {

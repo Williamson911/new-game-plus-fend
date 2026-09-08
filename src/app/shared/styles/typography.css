@@ -18,6 +18,13 @@ h1, h2, h3, .app-title {
   letter-spacing: 0.02em;
 }
 
+h1::before,
+h2::before {
+  content: '+';
+  color: var(--color-orange);
+  margin-right: 0.4em;
+}
+
 body {
   font-family: var(--font-body);
   color: var(--color-text);

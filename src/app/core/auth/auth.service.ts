@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { TokenStorageService } from './token-storage.service';
 import {
   AuthResponse,
+  ChangePasswordRequest,
   ConfirmResponse,
   JwtClaims,
   LoginRequest,
@@ -72,6 +73,10 @@ export class AuthService {
       .pipe(tap((me) => this._currentUser.set(me)));
   }
 
+  changePassword(request: ChangePasswordRequest): Observable<void> {
+    return this.http.put<void>(`${environment.apiUrl}/profile/password`, request);
+  }
+
   deleteAccount(): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/account`);
   }
@@ -128,7 +133,7 @@ export class AuthService {
     }
 
     this.tokenStorage.setToken(token);
-    this._roles.set(claims.roles ?? []);
+    this._roles.set((claims.roles ?? []).map((role) => role.replace(/^ROLE_/, '')));
     this._isAuthenticated.set(true);
   }
 

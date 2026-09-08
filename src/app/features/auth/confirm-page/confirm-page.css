@@ -10,17 +10,19 @@
 }
 
 .app-auth-page__panel {
-  background: var(--color-card);
-  border-top: 4px solid var(--color-orange);
+  background: var(--color-navy);
+  color: var(--color-surface);
   border-radius: var(--radius-card);
   padding: var(--space-4);
   margin-bottom: var(--space-3);
+  box-shadow: 0 20px 40px -22px rgba(26, 20, 34, 0.6);
 }
 
 .app-auth-page__panel-title {
   font-family: var(--font-title);
   font-size: 1.25rem;
   margin: 0 0 var(--space-2);
+  color: var(--color-orange);
 }
 
 .app-auth-page__links {

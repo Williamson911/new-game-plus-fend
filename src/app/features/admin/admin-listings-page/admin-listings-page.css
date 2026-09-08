@@ -8,15 +8,44 @@
 
 .app-admin-listings-page__price-range {
   display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.app-admin-listings-page__field {
+  display: flex;
   flex-direction: column;
   gap: var(--space-1);
 }
 
-.app-admin-listings-page__price-range input {
+.app-admin-listings-page__field label {
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.app-admin-listings-page__field input {
+  box-sizing: border-box;
+  height: 2.5rem;
   font-family: var(--font-body);
   padding: var(--space-2);
-  border: 2px solid var(--color-navy);
-  border-radius: var(--radius);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-card);
+  -moz-appearance: textfield;
+}
+
+.app-admin-listings-page__field input::-webkit-outer-spin-button,
+.app-admin-listings-page__field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.app-admin-listings-page__table-card {
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 28px -18px rgba(26, 20, 34, 0.4);
+  padding: var(--space-2) var(--space-3);
+  overflow-x: auto;
 }
 
 .app-admin-listings-page__table {
@@ -24,17 +53,27 @@
   border-collapse: collapse;
 }
 
-.app-admin-listings-page__table th,
+.app-admin-listings-page__table th {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.6;
+  text-align: left;
+}
+
 .app-admin-listings-page__table td {
   padding: var(--space-2) var(--space-3);
-  border-bottom: 2px solid var(--color-navy);
+  border-top: 1px solid var(--color-bg);
   text-align: left;
 }
 
 .app-admin-listings-page__thumb {
-  width: 3rem;
-  height: 3rem;
-  object-fit: cover;
+  width: 36px;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: var(--color-bg);
+  border-radius: calc(var(--radius-card) - 4px);
+  display: block;
 }
 
 .app-admin-listings-page__error {

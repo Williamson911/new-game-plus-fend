@@ -1,5 +1,5 @@
 <section class="app-home-section">
-  <h2 class="app-home-section__title"><img src="images/plusicon.svg" alt="" class="app-home-section__icon" />Derniers arrivages</h2>
+  <h2>Derniers arrivages</h2>
   @if (latest().length === 0 && !latestLoading()) {
     <p>Aucune annonce pour l'instant.</p>
   } @else {
@@ -20,7 +20,7 @@
 </section>
 
 <section class="app-home-section">
-  <h2 class="app-home-section__title"><img src="images/plusicon.svg" alt="" class="app-home-section__icon" />Pépites</h2>
+  <h2>Pépites</h2>
   @if (featured().length === 0 && !featuredLoading()) {
     <p>Aucune annonce pour l'instant.</p>
   } @else {
@@ -41,7 +41,7 @@
 </section>
 
 <section class="app-home-section">
-  <h2 class="app-home-section__title"><img src="images/plusicon.svg" alt="" class="app-home-section__icon" />Petits prix</h2>
+  <h2>Petits prix</h2>
   @if (cheap().length === 0 && !cheapLoading()) {
     <p>Aucune annonce pour l'instant.</p>
   } @else {

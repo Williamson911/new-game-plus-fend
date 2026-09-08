@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { GameResponse, Page } from './catalog.types';
+import { GameResponse, IgdbGameResult, Page } from './catalog.types';
 import { GameCreateRequest } from '../shop/shop.types';
 
 @Injectable({ providedIn: 'root' })
@@ -20,6 +20,11 @@ export class GameService {
   search(name: string, page: number, size = 10): Observable<Page<GameResponse>> {
     const params = new HttpParams().set('name', name).set('page', page).set('size', size);
     return this.http.get<Page<GameResponse>>(`${environment.apiUrl}/games`, { params });
+  }
+
+  searchIgdb(name: string): Observable<IgdbGameResult[]> {
+    const params = new HttpParams().set('name', name);
+    return this.http.get<IgdbGameResult[]>(`${environment.apiUrl}/games/igdb-search`, { params });
   }
 
   create(request: GameCreateRequest): Observable<GameResponse> {

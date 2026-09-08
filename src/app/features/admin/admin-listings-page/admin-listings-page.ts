@@ -7,13 +7,14 @@ import { GameService } from '../../../core/catalog/game.service';
 import { TextField } from '../../../shared/ui/text-field/text-field';
 import { SelectField, SelectOption } from '../../../shared/ui/select-field/select-field';
 import { Button } from '../../../shared/ui/button/button';
+import { Badge } from '../../../shared/ui/badge/badge';
 import { ListingResponse } from '../../../core/catalog/catalog.types';
 
 const PAGE_SIZE = 12;
 
 @Component({
   selector: 'app-admin-listings-page',
-  imports: [ReactiveFormsModule, TextField, SelectField, Button],
+  imports: [ReactiveFormsModule, TextField, SelectField, Button, Badge],
   templateUrl: './admin-listings-page.html',
   styleUrl: './admin-listings-page.css',
 })

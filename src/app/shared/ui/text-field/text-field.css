@@ -11,6 +11,8 @@
 }
 
 .app-text-field input {
+  box-sizing: border-box;
+  height: 2.5rem;
   font-family: var(--font-body);
   font-size: 1rem;
   padding: var(--space-2);

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Navbar } from '../navbar/navbar';
+import { Footer } from '../footer/footer';
 
 @Component({
   selector: 'app-shell',
-  imports: [RouterOutlet, Navbar],
+  imports: [RouterOutlet, Navbar, Footer],
   templateUrl: './shell.html',
   styleUrl: './shell.css',
 })

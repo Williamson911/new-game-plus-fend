@@ -33,6 +33,7 @@ describe('ProfilePage', () => {
   let authService: {
     refreshMe: ReturnType<typeof vi.fn>;
     updateProfile: ReturnType<typeof vi.fn>;
+    changePassword: ReturnType<typeof vi.fn>;
     deleteAccount: ReturnType<typeof vi.fn>;
     logout: ReturnType<typeof vi.fn>;
     hasRole: ReturnType<typeof vi.fn>;
@@ -47,6 +48,7 @@ describe('ProfilePage', () => {
     authService = {
       refreshMe: vi.fn().mockReturnValue(of(makeMe())),
       updateProfile: vi.fn(),
+      changePassword: vi.fn(),
       deleteAccount: vi.fn(),
       logout: vi.fn(),
       hasRole: vi.fn().mockReturnValue(false),
@@ -99,6 +101,49 @@ describe('ProfilePage', () => {
 
     expect(fixture.componentInstance.updateError()).not.toBeNull();
     expect(fixture.componentInstance.updateSuccess()).toBe(false);
+  });
+
+  it('changePassword() calls AuthService.changePassword and shows a confirmation on success', () => {
+    authService.changePassword.mockReturnValue(of(undefined));
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.passwordForm.setValue({
+      currentPassword: 'oldpass123',
+      newPassword: 'newpass456',
+    });
+    fixture.componentInstance.changePassword();
+
+    expect(authService.changePassword).toHaveBeenCalledWith({
+      currentPassword: 'oldpass123',
+      newPassword: 'newpass456',
+    });
+    expect(fixture.componentInstance.passwordSuccess()).toBe(true);
+    expect(fixture.componentInstance.passwordForm.getRawValue().currentPassword).toBe('');
+  });
+
+  it('changePassword() shows a specific error on a 401 (wrong current password)', () => {
+    authService.changePassword.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 401 })));
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.passwordForm.setValue({
+      currentPassword: 'wrong',
+      newPassword: 'newpass456',
+    });
+    fixture.componentInstance.changePassword();
+
+    expect(fixture.componentInstance.passwordError()).toBe('Mot de passe actuel incorrect.');
+    expect(fixture.componentInstance.passwordSuccess()).toBe(false);
+  });
+
+  it('changePassword() does nothing when the form is invalid', () => {
+    const fixture = TestBed.createComponent(ProfilePage);
+    fixture.detectChanges();
+
+    fixture.componentInstance.changePassword();
+
+    expect(authService.changePassword).not.toHaveBeenCalled();
   });
 
   it('deleteAccount() does nothing when the confirmation is declined', () => {

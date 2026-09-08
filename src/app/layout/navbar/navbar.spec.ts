@@ -106,6 +106,25 @@ describe('Navbar', () => {
     expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('My Shop');
   });
 
+  it('shows an Admin link for authenticated users with the ADMIN role', () => {
+    authService.isAuthenticatedSignal.set(true);
+    authService.rolesSignal.set(['ADMIN']);
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
+
+    const link = (fixture.nativeElement as HTMLElement).querySelector('a[href="/admin/listings"]');
+    expect(link?.textContent).toContain('Admin');
+  });
+
+  it('does not show an Admin link for authenticated users without the ADMIN role', () => {
+    authService.isAuthenticatedSignal.set(true);
+    authService.rolesSignal.set(['BUYER']);
+    const fixture = TestBed.createComponent(Navbar);
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement as HTMLElement).querySelector('a[href="/admin/listings"]')).toBeNull();
+  });
+
   it('calls AuthService.logout() when the logout button is clicked', () => {
     authService.isAuthenticatedSignal.set(true);
     const fixture = TestBed.createComponent(Navbar);

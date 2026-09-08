@@ -9,6 +9,9 @@
 
       @if (authService.isAuthenticated()) {
         <a routerLink="/my-shop" routerLinkActive="is-active">My Shop</a>
+        @if (authService.hasRole('ADMIN')) {
+          <a routerLink="/admin/listings" routerLinkActive="is-active">Admin</a>
+        }
         <div class="app-navbar__account">
           <button type="button" class="app-navbar__account-trigger" aria-haspopup="true">Mon compte</button>
           <div class="app-navbar__account-menu" role="menu">
