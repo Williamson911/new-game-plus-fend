@@ -54,11 +54,14 @@
   color: var(--color-orange);
 }
 
+.app-footer__bottom {
+  border-top: 4px solid var(--color-orange);
+}
+
 .app-footer__copyright {
   max-width: 1100px;
   margin: 0 auto;
   padding: var(--space-3) var(--space-5);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.8rem;
   opacity: 0.6;
 }
