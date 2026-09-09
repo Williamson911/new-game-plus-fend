@@ -1,10 +1,24 @@
 <header class="app-navbar">
   <div class="app-navbar__inner">
     <a class="app-navbar__brand" routerLink="/">
-      <img src="images/ng+.svg" alt="New Game Plus" />
+      <img src="images/ng+whitepaper.svg" alt="New Game Plus" />
     </a>
 
-    <nav class="app-navbar__links">
+    <button
+      type="button"
+      class="app-navbar__toggle"
+      [class.is-open]="isMobileMenuOpen()"
+      (click)="toggleMobileMenu()"
+      [attr.aria-expanded]="isMobileMenuOpen()"
+      aria-controls="app-navbar-links"
+      aria-label="Menu"
+    >
+      <span class="app-navbar__toggle-bar"></span>
+      <span class="app-navbar__toggle-bar"></span>
+      <span class="app-navbar__toggle-bar"></span>
+    </button>
+
+    <nav class="app-navbar__links" id="app-navbar-links" [class.is-open]="isMobileMenuOpen()" (click)="closeMobileMenu()">
       <a routerLink="/market" routerLinkActive="is-active">Market</a>
 
       @if (authService.isAuthenticated()) {

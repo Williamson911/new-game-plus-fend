@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/auth/auth.service';
 import { CartService } from '../../core/cart/cart.service';
@@ -14,10 +14,20 @@ export class Navbar {
   protected readonly cartService = inject(CartService);
   private readonly router = inject(Router);
 
+  protected readonly isMobileMenuOpen = signal(false);
+
   constructor() {
     if (this.authService.isAuthenticated()) {
       this.cartService.getCart().subscribe();
     }
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen.update((open) => !open);
+  }
+
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen.set(false);
   }
 
   logout(): void {
