@@ -32,13 +32,12 @@
         }
         <p class="app-my-shop-orders-page__total">Total : {{ orderTotal(order) }} €</p>
 
-        @if (nextStatusesFor(order).length > 0) {
-          <div class="app-my-shop-orders-page__actions">
-            @for (status of nextStatusesFor(order); track status) {
-              <app-button type="button" (pressed)="updateStatus(order, status)">{{ status }}</app-button>
-            }
-          </div>
-        }
+        <div class="app-my-shop-orders-page__actions">
+          @for (status of nextStatusesFor(order); track status) {
+            <app-button type="button" (pressed)="updateStatus(order, status)">{{ status }}</app-button>
+          }
+          <app-button type="button" variant="ghost" (pressed)="exportPdf(order)">Exporter en PDF</app-button>
+        </div>
       </li>
     }
   </ul>

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { MyShopOrdersPage } from './my-shop-orders-page';
 import { OrderService } from '../../../core/shop/order.service';
+import { OrderInvoiceService } from '../../../shared/pdf/order-invoice.service';
 import { OrderResponse } from '../../../core/shop/shop.types';
 
 function makeOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
@@ -24,14 +25,21 @@ function makeOrder(overrides: Partial<OrderResponse> = {}): OrderResponse {
 
 describe('MyShopOrdersPage', () => {
   let orderService: { getShopOrders: ReturnType<typeof vi.fn>; updateStatus: ReturnType<typeof vi.fn> };
+  let orderInvoiceService: { generateInvoice: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     orderService = {
       getShopOrders: vi.fn().mockReturnValue(of([makeOrder()])),
       updateStatus: vi.fn(),
     };
+    orderInvoiceService = {
+      generateInvoice: vi.fn().mockReturnValue({ save: vi.fn() }),
+    };
     TestBed.configureTestingModule({
-      providers: [{ provide: OrderService, useValue: orderService }],
+      providers: [
+        { provide: OrderService, useValue: orderService },
+        { provide: OrderInvoiceService, useValue: orderInvoiceService },
+      ],
     });
   });
 
@@ -83,6 +91,18 @@ describe('MyShopOrdersPage', () => {
 
     expect(orderService.updateStatus).toHaveBeenCalledWith('o1', 'SHIPPED');
     expect(fixture.componentInstance.orders()[0].status).toBe('SHIPPED');
+  });
+
+  it('exportPdf() generates and saves an invoice for the order', () => {
+    const save = vi.fn();
+    orderInvoiceService.generateInvoice.mockReturnValue({ save });
+    const fixture = TestBed.createComponent(MyShopOrdersPage);
+    const order = makeOrder();
+
+    fixture.componentInstance.exportPdf(order);
+
+    expect(orderInvoiceService.generateInvoice).toHaveBeenCalledWith(order);
+    expect(save).toHaveBeenCalledWith('facture-o1.pdf');
   });
 
   it('shows the shipping address for a HOME delivery', () => {

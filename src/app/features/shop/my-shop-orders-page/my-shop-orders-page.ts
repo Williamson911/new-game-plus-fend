@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { OrderService } from '../../../core/shop/order.service';
+import { OrderInvoiceService } from '../../../shared/pdf/order-invoice.service';
 import { Button } from '../../../shared/ui/button/button';
 import { OrderResponse, OrderStatus } from '../../../core/shop/shop.types';
 
@@ -19,6 +20,7 @@ const NEXT_STATUSES: Record<OrderStatus, OrderStatus[]> = {
 })
 export class MyShopOrdersPage {
   private readonly orderService = inject(OrderService);
+  private readonly orderInvoiceService = inject(OrderInvoiceService);
 
   readonly orders = signal<OrderResponse[]>([]);
   readonly loading = signal(true);
@@ -42,5 +44,9 @@ export class MyShopOrdersPage {
     this.orderService.updateStatus(order.id, status).subscribe((updated) => {
       this.orders.set(this.orders().map((o) => (o.id === updated.id ? updated : o)));
     });
+  }
+
+  exportPdf(order: OrderResponse): void {
+    this.orderInvoiceService.generateInvoice(order).save(`facture-${order.id}.pdf`);
   }
 }
