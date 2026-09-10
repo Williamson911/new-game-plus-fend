@@ -29,6 +29,7 @@
 
 .app-my-shop-page__listing {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3);
@@ -47,7 +48,8 @@
 }
 
 .app-my-shop-page__listing-name {
-  flex: 1;
+  flex: 1 1 120px;
+  min-width: 0;
 }
 
 .app-my-shop-page__listing-price {
